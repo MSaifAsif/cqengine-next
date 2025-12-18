@@ -122,79 +122,47 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- SHADE PLUGIN TEMPORARILY DISABLED DUE TO HANGING ISSUE
-                 The shade plugin causes infinite loops during dependency resolution.
-                 This is a known issue with complex dependency trees and Java 21.
-                 For now, we build only the standard jar without shading dependencies.
-                 To re-enable: uncomment this section and investigate alternatives like maven-assembly-plugin
-            -->
-            <!--
             <plugin>
+                <!--
+                    Maven Assembly Plugin - Alternative to shade plugin
+                    Creates a fat jar containing all dependencies without the complexity of relocation.
+                    This avoids the infinite loop issue experienced with maven-shade-plugin on Java 21.
+
+                    The jar-with-dependencies assembly will:
+                    - Include all runtime dependencies
+                    - Exclude signature files automatically via MetaInf-services handler
+                    - Create a single executable jar
+
+                    Output: cqengine-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+
+                    Note: Unlike shade plugin, this does NOT relocate packages, so dependencies
+                    remain in their original packages. This is acceptable for most use cases and
+                    actually preferred for dependency transparency.
+                -->
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.1</version>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
+                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>single</goal>
                         </goals>
                         <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>all</shadedClassifierName>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.googlecode.concurrenttrees</pattern>
-                                    <shadedPattern>com.googlecode.cqengine.lib.com.googlecode.concurrenttrees</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.esotericsoftware</pattern>
-                                    <shadedPattern>com.googlecode.cqengine.lib.com.esotericsoftware</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>de.javakaffee</pattern>
-                                    <shadedPattern>com.googlecode.cqengine.lib.de.javakaffee</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javassist</pattern>
-                                    <shadedPattern>com.googlecode.cqengine.lib.javassist</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.antlr.v4.runtime</pattern>
-                                    <shadedPattern>com.googlecode.cqengine.lib.org.antlr.v4.runtime</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.objenesis</pattern>
-                                    <shadedPattern>com.googlecode.cqengine.lib.org.objenesis</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>net.jodah</pattern>
-                                    <shadedPattern>com.googlecode.cqengine.lib.net.jodah</shadedPattern>
-                                </relocation>
-                            </relocations>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
-                                    <addHeader>false</addHeader>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                </transformer>
-                            </transformers>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifestEntries>
+                                    <Multi-Release>true</Multi-Release>
+                                </manifestEntries>
+                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                            </archive>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            -->
 
             <plugin>
                 <groupId>org.jacoco</groupId>
