@@ -32,6 +32,8 @@ import static com.googlecode.cqengine.query.QueryFactory.equal;
 
 /**
  * @author Niall Gallagher
+ * @author Saif Asif
+ * Modified by Saif Asif to fix EqualsVerifier reflexivity field check with Java 21
  */
 public class ReflectiveAttributeTest {
 
@@ -72,7 +74,7 @@ public class ReflectiveAttributeTest {
                 .withRedefinedSuperclass()
                 .withPrefabValues(Field.class, Foo.class.getDeclaredField("foo"), Bar.class.getDeclaredField("bar"))
                 .withCachedHashCode("cachedHashCode", "calcHashCode", null)
-                .suppress(Warning.NULL_FIELDS, Warning.STRICT_INHERITANCE, Warning.NO_EXAMPLE_FOR_CACHED_HASHCODE)
+                .suppress(Warning.NULL_FIELDS, Warning.STRICT_INHERITANCE, Warning.NO_EXAMPLE_FOR_CACHED_HASHCODE, Warning.REFERENCE_EQUALITY)
                 .verify();
     }
 

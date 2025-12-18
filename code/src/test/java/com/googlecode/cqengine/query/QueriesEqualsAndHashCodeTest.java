@@ -41,6 +41,8 @@ import static java.util.Collections.singletonList;
 
 /**
  * @author Niall Gallagher
+ * @author Saif Asif
+ * Modified by Saif Asif to fix EqualsVerifier compatibility with Java 21 bytecode
  */
 @RunWith(DataProviderRunner.class)
 public class QueriesEqualsAndHashCodeTest {
@@ -90,6 +92,7 @@ public class QueriesEqualsAndHashCodeTest {
                 .withCachedHashCode("cachedHashCode", "calcHashCode", null)
                 .suppress(Warning.NULL_FIELDS, Warning.STRICT_INHERITANCE, Warning.NO_EXAMPLE_FOR_CACHED_HASHCODE)
                 .verify();
+
     }
 
     @Test

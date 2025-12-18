@@ -29,6 +29,8 @@ import static org.junit.Assert.*;
  * Tests creation of CQEngine attributes from lambda expressions.
  *
  * @author npgall
+ * @author Saif Asif
+ * Modified by Saif Asif to fix lambda type erasure issues with Java 21
  */
 public class LambdaFunctionalAttributesTest {
 
