@@ -11,12 +11,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **maven-assembly-plugin 3.6.0** - Creates fat jar with all dependencies (16 MB) in ~5 seconds, full Java 21 compatibility
+- **Docker-based integration tests** - Testcontainers support for realistic database testing (30 total: 29 passing, 1 skipped)
+  - `DockerSQLiteIntegrationTest` - 7 tests for SQLite persistence, concurrency, large datasets
+  - `DockerDiskPersistenceIntegrationTest` - 8 tests for disk persistence, compaction, WAL mode
+  - `DockerOffHeapPersistenceIntegrationTest` - 8 tests for off-heap memory, container limits, concurrent access
+  - `DockerCompositePersistenceIntegrationTest` - 7 tests for multi-tier persistence (6 passing, 1 skipped)
+  - Tests run in isolated Alpine Linux containers with mounted volumes and memory limits
+  - Real filesystem I/O, native memory, and multi-tier architecture testing
+  - **Known Limitation**: `testCompositePersistence_AllThreeLayers` skipped due to StackOverflow when combining DiskPersistence + OffHeapIndex on same primary key (SQLite recursion issue)
 
 ### Changed
 - **Project rebranded** to "CQEngine Next - Maintained Fork" with repository moved to `cqengine-next`
 
 ### Fixed
 - **Build system** - Replaced problematic maven-shade-plugin with maven-assembly-plugin to resolve infinite loop issue
+
+### Dependencies
+- **Testcontainers 1.19.3** - Added for Docker-based integration testing
+- **SLF4J Simple 1.7.36** - Added for Testcontainers logging (test scope only)
+
+### Requirements for Docker Tests
+- **Docker Desktop** or **Docker Engine** must be installed and running
+- To run Docker tests: `mvn test -Dtest=Docker*IntegrationTest`
+- **Troubleshooting Docker connection issues:**
+  1. Verify Docker is running: `docker ps` should show output without errors
+  2. Check Docker socket: `ls -la /var/run/docker.sock` (or `~/.docker/run/docker.sock` on macOS)
+  3. Restart Docker Desktop if tests fail with "Could not find valid Docker environment"
+  4. Check Docker Desktop settings: Enable "Expose daemon on tcp://localhost:2375 without TLS" if needed
+  5. Configuration file created: `src/test/resources/.testcontainers.properties`
+  6. Set DOCKER_HOST if needed: `export DOCKER_HOST=unix:///var/run/docker.sock`
 
 ---
 
