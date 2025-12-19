@@ -5,7 +5,7 @@
 > **This is a maintained fork of the original CQEngine** by Niall Gallagher.  
 > This version is published under the GroupId **`io.github.msaifasif`** to provide continued support, Java 21 compatibility, and modern dependency updates.
 >
-> Project is NOT YET PUBLISHED to the following repository. Will be published soon.
+> **Now available on Maven Central!**
 > 
 > - **Original Project:** [github.com/npgall/cqengine](https://github.com/npgall/cqengine)
 > - **This Fork:** [github.com/MSaifAsif/cqengine-next](https://github.com/MSaifAsif/cqengine-next)
@@ -24,7 +24,7 @@ Add this to your `pom.xml`:
 <dependency>
     <groupId>io.github.msaifasif</groupId>
     <artifactId>cqengine</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -34,7 +34,7 @@ Add this to your `build.gradle`:
 
 ```gradle
 dependencies {
-    implementation 'io.github.msaifasif:cqengine:1.0.0-SNAPSHOT'
+    implementation 'io.github.msaifasif:cqengine:1.0.0'
 }
 ```
 
@@ -51,7 +51,7 @@ import com.googlecode.cqengine.query.QueryFactory;
 
 **Only the Maven coordinates have changed:**
 - **Old:** `com.googlecode.cqengine:cqengine:3.6.1-SNAPSHOT`
-- **New:** `io.github.msaifasif:cqengine:1.0.0-SNAPSHOT`
+- **New:** `io.github.msaifasif:cqengine:1.0.0`
 
 ---
 
@@ -250,7 +250,7 @@ Licensed under the Apache License, Version 2.0. See LICENSE file for details.
 
 ## Project Status - Maintained Fork
 
-  * **Current Release:** 1.0.0-SNAPSHOT (December 2025)
+  * **Current Release:** 1.0.0 (December 2025)
   * **Java Version:** JDK 21
   * **Status:** Actively Maintained
   * **CHANGELOG:** [CHANGELOG.md](CHANGELOG.md)
