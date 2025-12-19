@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2025-12-19
+
+### 🎉 First Official Release to Maven Central
+
+This is the first official release of CQEngine Next, a maintained fork of the original CQEngine library by Niall Gallagher. This version is now available on Maven Central under the GroupId `io.github.msaifasif`.
+
+### Changed
+- **Version**: Updated from `1.0.0-SNAPSHOT` to `1.0.0` for official Maven Central release
+- **README.md**: Updated to reflect Maven Central availability
+
+### Release Notes
+- **Maven Central Coordinates**: `io.github.msaifasif:cqengine:1.0.0`
+- **100% Backward Compatible**: All Java packages remain unchanged (`com.googlecode.cqengine.*`)
+- **Java 21 Required**: This release requires JDK 21 or higher
+- **No Code Changes Needed**: Users migrating from the original CQEngine only need to update Maven coordinates
+
+---
+
 ## [1.0.0-SNAPSHOT] - 2025-12-18 & 2025-12-19
 
 ### Added
