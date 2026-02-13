@@ -6,9 +6,9 @@ This repository now includes a GitHub Pages site showcasing the CQEngine Next pr
 
 To deploy the GitHub Pages site, follow these steps:
 
-### Option 1: Using the gh-pages branch (Recommended)
+### Using the gh-pages branch (Recommended)
 
-The `gh-pages` branch has been created locally with the `index.html` file. To deploy:
+The `gh-pages` branch has been created as an **orphan branch** containing only the website files (no source code or documentation). To deploy:
 
 1. Push the `gh-pages` branch to GitHub:
    ```bash
@@ -26,13 +26,19 @@ The `gh-pages` branch has been created locally with the `index.html` file. To de
    https://msaifasif.github.io/cqengine-next/
    ```
 
-### Option 2: Using GitHub Actions (Alternative)
+### Clean gh-pages Branch Structure
 
-Alternatively, you can use GitHub Actions to deploy from the main branch:
+The `gh-pages` branch contains **only** the files needed for the website:
+```
+gh-pages/
+├── index.html                                           # Main website file
+└── documentation/
+    └── images/
+        └── quantized-navigable-index-carid-between.png  # Performance chart
+```
 
-1. Go to `Settings` > `Pages`
-2. Under "Source", select "GitHub Actions"
-3. The `index.html` file can be deployed from any branch using a workflow
+This clean structure ensures fast loading and keeps the website separate from the source code.
+
 
 ### Verification
 
@@ -42,6 +48,15 @@ https://msaifasif.github.io/cqengine-next/
 ```
 
 It may take a few minutes for the site to become available after the first deployment.
+
+## 🧹 Why a Clean gh-pages Branch?
+
+The `gh-pages` branch is an **orphan branch** with no shared history with the main development branches. This provides several benefits:
+
+- **Faster loading**: Only website files are present (2 files vs 100+ source files)
+- **Cleaner deployments**: No build artifacts, source code, or test files
+- **Better separation**: Website content is completely separate from application code
+- **Smaller repository**: When cloning just the gh-pages branch, users get only what they need
 
 ## 📄 Site Contents
 
@@ -60,16 +75,23 @@ The GitHub Pages site includes:
 
 To update the GitHub Pages site:
 
-1. Make changes to `index.html` on the `gh-pages` branch
-2. Commit and push the changes:
+1. Switch to the gh-pages branch:
    ```bash
    git checkout gh-pages
-   git add index.html
+   ```
+
+2. Make changes to `index.html` or add new images to `documentation/images/`
+
+3. Commit and push the changes:
+   ```bash
+   git add .
    git commit -m "Update GitHub Pages site"
    git push origin gh-pages
    ```
 
-3. The site will automatically update within a few minutes
+4. The site will automatically update within a few minutes
+
+**Note**: The gh-pages branch is separate from the main development branches. To update content from README or documentation, you'll need to manually copy and update the relevant sections in `index.html`.
 
 ## 📸 Preview
 
