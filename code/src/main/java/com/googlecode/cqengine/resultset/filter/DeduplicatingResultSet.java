@@ -37,7 +37,6 @@ import java.util.Iterator;
  */
 public class DeduplicatingResultSet<O, A> extends ResultSet<O> {
 
-    // TODO is this class unused?
 
     final ResultSet<O> wrappedResultSet;
     final Attribute<O, A> uniqueAttribute;
