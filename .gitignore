@@ -1,3 +1,36 @@
 /code/target/*
 /code/.idea/*
 .m2/*
+
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+desktop.ini
+*.lnk
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Java / Maven
+*.class
+*.jar
+*.war
+target/
+
+# Logs
+*.log
