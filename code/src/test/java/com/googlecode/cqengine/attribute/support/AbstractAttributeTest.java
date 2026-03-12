@@ -19,13 +19,16 @@ import com.googlecode.cqengine.attribute.SimpleAttribute;
 import com.googlecode.cqengine.query.option.QueryOptions;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author alessio-vivaldelli
+ */
 public class AbstractAttributeTest {
 
     static class ValidAttribute extends SimpleAttribute<Integer, String> {
@@ -80,29 +83,29 @@ public class AbstractAttributeTest {
     };
 
     @Test
-    public void testReadGenericObjectType() throws Exception {
+    public void testReadGenericObjectType() {
         //noinspection AssertEqualsBetweenInconvertibleTypes
-        Assert.assertEquals(Integer.class, AbstractAttribute.readGenericObjectType(ValidAttribute.class, "foo"));
+        assertEquals(Integer.class, AbstractAttribute.readGenericObjectType(ValidAttribute.class, "foo"));
         //noinspection AssertEqualsBetweenInconvertibleTypes
-        Assert.assertEquals(Set.class, AbstractAttribute.readGenericObjectType(ValidAttributeWithParameterizedTypes.class, "foo"));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testReadGenericObjectType_InvalidAttribute() throws Exception {
-        AbstractAttribute.readGenericObjectType(InvalidAttribute.class, "foo");
+        assertEquals(Set.class, AbstractAttribute.readGenericObjectType(ValidAttributeWithParameterizedTypes.class, "foo"));
     }
 
     @Test
-    public void testReadGenericAttributeType() throws Exception {
-        //noinspection AssertEqualsBetweenInconvertibleTypes
-        Assert.assertEquals(String.class, AbstractAttribute.readGenericAttributeType(ValidAttribute.class, "foo"));
-        //noinspection AssertEqualsBetweenInconvertibleTypes
-        Assert.assertEquals(List.class, AbstractAttribute.readGenericAttributeType(ValidAttributeWithParameterizedTypes.class, "foo"));
+    public void testReadGenericObjectType_InvalidAttribute(){
+        assertThrows(IllegalStateException.class, () -> AbstractAttribute.readGenericObjectType(InvalidAttribute.class, "foo"));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testReadGenericAttributeType_InvalidAttribute() throws Exception {
-        AbstractAttribute.readGenericAttributeType(InvalidAttribute.class, "foo");
+    @Test
+    public void testReadGenericAttributeType() {
+        //noinspection AssertEqualsBetweenInconvertibleTypes
+        assertEquals(String.class, AbstractAttribute.readGenericAttributeType(ValidAttribute.class, "foo"));
+        //noinspection AssertEqualsBetweenInconvertibleTypes
+        assertEquals(List.class, AbstractAttribute.readGenericAttributeType(ValidAttributeWithParameterizedTypes.class, "foo"));
+    }
+
+    @Test
+    public void testReadGenericAttributeType_InvalidAttribute() {
+        assertThrows(IllegalStateException.class, () ->AbstractAttribute.readGenericAttributeType(InvalidAttribute.class, "foo"));
     }
 
     @Test
@@ -113,19 +116,21 @@ public class AbstractAttributeTest {
         a3 = new ValidAttributeMultipleConstructors(Integer.class, String.class);
         a4 = new ValidAttributeMultipleConstructors(Integer.class, String.class, "foo");
 
-        Assert.assertEquals(Integer.class, a1.getObjectType());
-        Assert.assertEquals(Integer.class, a2.getObjectType());
-        Assert.assertEquals(Integer.class, a3.getObjectType());
-        Assert.assertEquals(Integer.class, a4.getObjectType());
+        assertAll("constructor variants",
+            () -> assertEquals(Integer.class, a1.getObjectType()),
+            () -> assertEquals(Integer.class, a2.getObjectType()),
+            () -> assertEquals(Integer.class, a3.getObjectType()),
+            () -> assertEquals(Integer.class, a4.getObjectType()),
+            () -> assertEquals(String.class, a1.getAttributeType()),
+            () -> assertEquals(String.class, a2.getAttributeType()),
+            () -> assertEquals(String.class, a3.getAttributeType()),
+            () -> assertEquals(String.class, a4.getAttributeType()),
+            () -> assertEquals("<Unnamed attribute, class com.googlecode.cqengine.attribute.support.AbstractAttributeTest$ValidAttributeMultipleConstructors>", a1.getAttributeName()),
+            () -> assertEquals("foo", a2.getAttributeName()),
+            () -> assertEquals("<Unnamed attribute, class com.googlecode.cqengine.attribute.support.AbstractAttributeTest$ValidAttributeMultipleConstructors>", a3.getAttributeName()),
+            () -> assertEquals("foo", a4.getAttributeName())
+        );
 
-        Assert.assertEquals(String.class, a1.getAttributeType());
-        Assert.assertEquals(String.class, a2.getAttributeType());
-        Assert.assertEquals(String.class, a3.getAttributeType());
-        Assert.assertEquals(String.class, a4.getAttributeType());
 
-        Assert.assertEquals("<Unnamed attribute, class com.googlecode.cqengine.attribute.support.AbstractAttributeTest$ValidAttributeMultipleConstructors>", a1.getAttributeName());
-        Assert.assertEquals("foo", a2.getAttributeName());
-        Assert.assertEquals("<Unnamed attribute, class com.googlecode.cqengine.attribute.support.AbstractAttributeTest$ValidAttributeMultipleConstructors>", a3.getAttributeName());
-        Assert.assertEquals("foo", a4.getAttributeName());
     }
 }

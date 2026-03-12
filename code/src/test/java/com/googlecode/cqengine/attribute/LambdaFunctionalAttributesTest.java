@@ -18,18 +18,19 @@ package com.googlecode.cqengine.attribute;
 import com.googlecode.cqengine.attribute.support.MultiValueFunction;
 import com.googlecode.cqengine.attribute.support.SimpleFunction;
 import com.googlecode.cqengine.testutil.Car;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static com.googlecode.cqengine.query.QueryFactory.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests creation of CQEngine attributes from lambda expressions.
  *
  * @author npgall
  * @author Saif Asif
+ * @author alessio-vivaldelli
  * Modified by Saif Asif to fix lambda type erasure issues with Java 21
  */
 public class LambdaFunctionalAttributesTest {

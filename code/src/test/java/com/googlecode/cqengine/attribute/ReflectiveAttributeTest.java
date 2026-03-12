@@ -22,8 +22,9 @@ import com.googlecode.cqengine.index.hash.HashIndex;
 import com.googlecode.cqengine.query.QueryFactory;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ import static com.googlecode.cqengine.query.QueryFactory.equal;
 /**
  * @author Niall Gallagher
  * @author Saif Asif
+ * @author alessio-vivaldelli
  * Modified by Saif Asif to fix EqualsVerifier reflexivity field check with Java 21
  */
 public class ReflectiveAttributeTest {
@@ -51,21 +53,15 @@ public class ReflectiveAttributeTest {
         cars.add(new Car(2, "ford taurus", "dirty and unreliable, flat tyre", Arrays.asList("spare tyre", "radio")));
         cars.add(new Car(3, "honda civic", "has a flat tyre and high mileage", Arrays.asList("radio")));
 
-        Assert.assertEquals(cars.retrieve(equal(NAME, "honda civic")).size(), 1);
+        assertEquals(1, cars.retrieve(equal(NAME, "honda civic")).size());
     }
 
     @Test
     public void testGetInheritedField() throws NoSuchFieldException {
-        Assert.assertEquals("foo", ReflectiveAttribute.getField(Bar.class, "foo").getName());
-        Assert.assertEquals("bar", ReflectiveAttribute.getField(Bar.class, "bar").getName());
-        NoSuchFieldException expected = null;
-        try {
-            ReflectiveAttribute.getField(Bar.class, "baz");
-        }
-        catch (NoSuchFieldException nsfe) {
-            expected = nsfe;
-        }
-        Assert.assertNotNull(expected);
+        assertEquals("foo", ReflectiveAttribute.getField(Bar.class, "foo").getName());
+        assertEquals("bar", ReflectiveAttribute.getField(Bar.class, "bar").getName());
+
+        assertThrows(NoSuchFieldException.class, () ->  ReflectiveAttribute.getField(Bar.class, "baz"));
     }
 
     @Test
@@ -78,21 +74,21 @@ public class ReflectiveAttributeTest {
                 .verify();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testInvalidField() {
-        ReflectiveAttribute.forField(Foo.class, int.class, "baz");
+        assertThrows(IllegalStateException.class, () -> ReflectiveAttribute.forField(Foo.class, int.class, "baz"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testInvalidFieldType() {
-        ReflectiveAttribute.forField(Foo.class, double.class, "foo");
+        assertThrows(IllegalStateException.class, () -> ReflectiveAttribute.forField(Foo.class, double.class, "foo"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     @SuppressWarnings("unchecked")
     public void testGetValueInvalidObject() {
         ReflectiveAttribute reflectiveAttribute = ReflectiveAttribute.forField(Foo.class, int.class, "foo");
-        reflectiveAttribute.getValue("", QueryFactory.noQueryOptions());
+        assertThrows(IllegalStateException.class, () -> reflectiveAttribute.getValue("", QueryFactory.noQueryOptions()));
     }
 
     static class Foo {
