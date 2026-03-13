@@ -24,7 +24,8 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -34,7 +35,6 @@ import static com.googlecode.cqengine.query.QueryFactory.equal;
 /**
  * @author Niall Gallagher
  * @author Saif Asif
- * @author alessio-vivaldelli
  * Modified by Saif Asif to fix EqualsVerifier reflexivity field check with Java 21
  */
 public class ReflectiveAttributeTest {

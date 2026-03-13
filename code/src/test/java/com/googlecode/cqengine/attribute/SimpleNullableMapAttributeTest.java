@@ -17,7 +17,7 @@ package com.googlecode.cqengine.attribute;
 
 import com.googlecode.concurrenttrees.common.Iterables;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,6 @@ import static com.googlecode.cqengine.query.QueryFactory.noQueryOptions;
 
 /**
  * Created by npgall on 23/05/2016.
- * @author alessio-vivaldelli
  */
 public class SimpleNullableMapAttributeTest {
 
