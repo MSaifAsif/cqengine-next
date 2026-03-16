@@ -17,14 +17,24 @@ package com.googlecode.cqengine.codegen;
 
 import com.googlecode.cqengine.attribute.*;
 import com.googlecode.cqengine.examples.inheritance.SportsCar;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import static com.googlecode.cqengine.codegen.AttributeBytecodeGenerator.*;
 import static com.googlecode.cqengine.query.QueryFactory.noQueryOptions;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class AttributeBytecodeGeneratorTest {
 
@@ -66,6 +76,30 @@ public class AttributeBytecodeGeneratorTest {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("illegalStateExceptionCases")
+    void testExceptionHandling(Executable executable) {
+        assertThrows(IllegalStateException.class, executable);
+    }
+
+    static Stream<Executable> illegalStateExceptionCases() {
+        return Stream.of(
+                () -> generateSimpleAttributeForField(null, String.class, "foo", "foo"),
+                () -> generateSimpleAttributeForField(PojoWithField.class, null, "foo", "foo"),
+                () -> generateSimpleNullableAttributeForField(null, String.class, "foo", "foo"),
+                () -> generateMultiValueAttributeForField(null, String.class, "foo", "object.foo"),
+                () -> generateMultiValueAttributeForField(PojoWithMultiValueField.class, null, "foo", "foo"),
+                () -> ensureFieldExists(String.class, Integer.class, "xxxxxxxxxx", "na"),
+                () -> ensureGetterExists(String.class, Integer.class, "xxxxxxxxxx", "na"),
+                () -> ensureParameterizedGetterExists(String.class, Integer.class, "xxxxxxxxxx", "x", "na"),
+                () -> ensureParameterizedGetterExists(String.class, Integer.class, "xxxxxxxxxx", "\"foo\"", "na"),
+                () -> ensureParameterizedGetterExists(String.class, Integer.class, "xxxxxxxxxx", "\\foo", "na"),
+                () -> AttributeBytecodeGenerator.getWrapperForPrimitive(String.class),
+                () -> generateMultiValueNullableAttributeForField(null, String.class, "foo", true, "object.foo"),
+                () -> generateMultiValueNullableAttributeForField(NullablePojoWithMultiValueField.class, null, "foo", true, "foo")
+        );
+    }
+
     @Test
     @SuppressWarnings("unchecked")
     public void testCreateAttributesForFields() {
@@ -76,20 +110,24 @@ public class AttributeBytecodeGeneratorTest {
         assertFalse(attributes.containsKey("horsepower")); // horsepower is not accessible from the subclass
         // 2 fields in SuperCar, plus 0 fields inherited from SportsCar, plus 4 inherited from Car...
         assertEquals(6, attributes.size());
-        // Validate attributes reading fields from car1...
-        validateAttribute(((Attribute<SuperCar, Integer>)attributes.get("carId")), SuperCar.class, Integer.class, "carId", car1, Collections.singletonList(0));
-        validateAttribute(((Attribute<SuperCar, String>)attributes.get("name")), SuperCar.class, String.class, "name", car1, Collections.singletonList("Ford Focus"));
-        validateAttribute(((Attribute<SuperCar, String>)attributes.get("description")), SuperCar.class, String.class, "description", car1, Collections.singletonList("Blue"));
-        validateAttribute(((Attribute<SuperCar, String>)attributes.get("features")), SuperCar.class, String.class, "features", car1, Arrays.asList("sunroof", "radio"));
-        validateAttribute(((Attribute<SuperCar, Double>)attributes.get("tyrePressures")), SuperCar.class, Double.class, "tyrePressures", car1, Arrays.asList(1536.5, 1782.9));
-        validateAttribute(((Attribute<SuperCar, Float>)attributes.get("wheelSpeeds")), SuperCar.class, Float.class, "wheelSpeeds", car1, Arrays.asList(56700.9F, 83321.0F));
-        // Validate attributes reading fields from car2...
-        validateAttribute(((Attribute<SuperCar, Integer>)attributes.get("carId")), SuperCar.class, Integer.class, "carId", car2, Collections.singletonList(1));
-        validateAttribute(((Attribute<SuperCar, String>)attributes.get("name")), SuperCar.class, String.class, "name", car2, Collections.singletonList("Ford Fusion"));
-        validateAttribute(((Attribute<SuperCar, String>)attributes.get("description")), SuperCar.class, String.class, "description", car2, Collections.singletonList("Red"));
-        validateAttribute(((Attribute<SuperCar, String>)attributes.get("features")), SuperCar.class, String.class, "features", car2, Arrays.asList("coupe", "cd player"));
-        validateAttribute(((Attribute<SuperCar, Double>)attributes.get("tyrePressures")), SuperCar.class, Double.class, "tyrePressures", car2, Arrays.asList(12746.2, 2973.1));
-        validateAttribute(((Attribute<SuperCar, Float>)attributes.get("wheelSpeeds")), SuperCar.class, Float.class, "wheelSpeeds", car2, Arrays.asList(43424.4F, 61232.7F));
+
+        assertAll(
+            // Validate attributes reading fields from car1...
+            () -> validateAttribute(((Attribute<SuperCar, Integer>)attributes.get("carId")), SuperCar.class, Integer.class, "carId", car1, Collections.singletonList(0)),
+            () -> validateAttribute(((Attribute<SuperCar, String>)attributes.get("name")), SuperCar.class, String.class, "name", car1, Collections.singletonList("Ford Focus")),
+            () -> validateAttribute(((Attribute<SuperCar, String>)attributes.get("description")), SuperCar.class, String.class, "description", car1, Collections.singletonList("Blue")),
+            () -> validateAttribute(((Attribute<SuperCar, String>)attributes.get("features")), SuperCar.class, String.class, "features", car1, Arrays.asList("sunroof", "radio")),
+            () -> validateAttribute(((Attribute<SuperCar, Double>)attributes.get("tyrePressures")), SuperCar.class, Double.class, "tyrePressures", car1, Arrays.asList(1536.5, 1782.9)),
+            () -> validateAttribute(((Attribute<SuperCar, Float>)attributes.get("wheelSpeeds")), SuperCar.class, Float.class, "wheelSpeeds", car1, Arrays.asList(56700.9F, 83321.0F)),
+            // Validate attributes reading fields from car2..,
+            () -> validateAttribute(((Attribute<SuperCar, Integer>)attributes.get("carId")), SuperCar.class, Integer.class, "carId", car2, Collections.singletonList(1)),
+            () -> validateAttribute(((Attribute<SuperCar, String>)attributes.get("name")), SuperCar.class, String.class, "name", car2, Collections.singletonList("Ford Fusion")),
+            () -> validateAttribute(((Attribute<SuperCar, String>)attributes.get("description")), SuperCar.class, String.class, "description", car2, Collections.singletonList("Red")),
+            () -> validateAttribute(((Attribute<SuperCar, String>)attributes.get("features")), SuperCar.class, String.class, "features", car2, Arrays.asList("coupe", "cd player")),
+            () -> validateAttribute(((Attribute<SuperCar, Double>)attributes.get("tyrePressures")), SuperCar.class, Double.class, "tyrePressures", car2, Arrays.asList(12746.2, 2973.1)),
+            () -> validateAttribute(((Attribute<SuperCar, Float>)attributes.get("wheelSpeeds")), SuperCar.class, Float.class, "wheelSpeeds", car2, Arrays.asList(43424.4F, 61232.7F))
+        );
+
     }
 
     @Test
@@ -100,10 +138,13 @@ public class AttributeBytecodeGeneratorTest {
 
         Map<String, ? extends Attribute<SuperCar, ?>> attributes = AttributeBytecodeGenerator.createAttributes(SuperCar.class, MemberFilters.GETTER_METHODS_ONLY);
         assertEquals(1, attributes.size());
-        // Validate attributes reading fields from car1...
-        validateAttribute(((Attribute<SuperCar, Float>)attributes.get("getWheelSpeeds")), SuperCar.class, Float.class, "getWheelSpeeds", car1, Arrays.asList(56700.9F, 83321.0F));
-        // Validate attributes reading fields from car2...
-        validateAttribute(((Attribute<SuperCar, Float>)attributes.get("getWheelSpeeds")), SuperCar.class, Float.class, "getWheelSpeeds", car2, Arrays.asList(43424.4F, 61232.7F));
+
+        assertAll(
+            // Validate attributes reading fields from car1...
+            () -> validateAttribute(((Attribute<SuperCar, Float>)attributes.get("getWheelSpeeds")), SuperCar.class, Float.class, "getWheelSpeeds", car1, Arrays.asList(56700.9F, 83321.0F)),
+            // Validate attributes reading fields from car2...
+            () -> validateAttribute(((Attribute<SuperCar, Float>)attributes.get("getWheelSpeeds")), SuperCar.class, Float.class, "getWheelSpeeds", car2, Arrays.asList(43424.4F, 61232.7F))
+        );
     }
 
     @Test
@@ -145,16 +186,6 @@ public class AttributeBytecodeGeneratorTest {
         validateAttribute(attribute, PojoWithParameterizedGetter.class, String.class, "foo", new PojoWithParameterizedGetter(), asList("bar_baz"));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testGenerateSimpleAttributeForField_ExceptionHandling1() throws Exception {
-        generateSimpleAttributeForField(null, String.class, "foo", "foo");
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testGenerateSimpleAttributeForField_ExceptionHandling2() throws Exception {
-        generateSimpleAttributeForField(PojoWithField.class, null, "foo", "foo");
-    }
-
     // ====== Tests for SimpleNullableAttribute ======
 
     static class NullablePojoWithField {
@@ -192,11 +223,6 @@ public class AttributeBytecodeGeneratorTest {
         Class<? extends SimpleNullableAttribute<NullablePojoWithParameterizedGetter, String>> attributeClass = generateSimpleNullableAttributeForParameterizedGetter(NullablePojoWithParameterizedGetter.class, String.class, "getFoo", "baz", "foo");
         SimpleNullableAttribute<NullablePojoWithParameterizedGetter, String> attribute = attributeClass.newInstance();
         validateAttribute(attribute, NullablePojoWithParameterizedGetter.class, String.class, "foo", new NullablePojoWithParameterizedGetter(), Collections.<String>emptyList());
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testGenerateSimpleNullableAttributeForField_ExceptionHandling1() throws Exception {
-        generateSimpleNullableAttributeForField(null, String.class, "foo", "foo");
     }
 
     // ====== Tests for MultiValueAttribute ======
@@ -260,17 +286,6 @@ public class AttributeBytecodeGeneratorTest {
         validateAttribute(attribute, PojoWithMultiValueParameterizedGetter.class, String.class, "foo", new PojoWithMultiValueParameterizedGetter(), asList("bar1_baz", "bar2_baz"));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testGenerateMultiValueAttributeForField_ExceptionHandling1() throws Exception {
-        generateMultiValueAttributeForField(null, String.class, "foo", "object.foo");
-    }
-
-
-    @Test(expected = IllegalStateException.class)
-    public void testGenerateMultiValueAttributeForField_ExceptionHandling2() throws Exception {
-        generateMultiValueAttributeForField(PojoWithMultiValueField.class, null, "foo", "foo");
-    }
-
     // ====== Tests for MultiValueNullableAttribute ======
 
     static class NullablePojoWithMultiValueField {
@@ -310,62 +325,23 @@ public class AttributeBytecodeGeneratorTest {
         validateAttribute(attribute, NullablePojoWithMultiValueParameterizedGetter.class, String.class, "foo", new NullablePojoWithMultiValueParameterizedGetter(), Collections.<String>emptyList());
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testGenerateMultiValueNullableAttributeForField_ExceptionHandling1() throws Exception {
-        generateMultiValueNullableAttributeForField(null, String.class, "foo", true, "object.foo");
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testGenerateMultiValueNullableAttributeForField_ExceptionHandling2() throws Exception {
-        generateMultiValueNullableAttributeForField(NullablePojoWithMultiValueField.class, null, "foo", true, "foo");
-    }
 
     // ====== Tests for support methods ======
-
-    @Test(expected = IllegalStateException.class)
-    public void testEnsureFieldExists_Negative() {
-        ensureFieldExists(String.class, Integer.class, "xxxxxxxxxx", "na");
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testEnsureGetterExists_Negative() {
-        ensureGetterExists(String.class, Integer.class, "xxxxxxxxxx", "na");
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testEnsureParameterizedGetterExists_Negative1() {
-        ensureParameterizedGetterExists(String.class, Integer.class, "xxxxxxxxxx", "x", "na");
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testEnsureParameterizedGetterExists_Negative2() {
-        ensureParameterizedGetterExists(String.class, Integer.class, "xxxxxxxxxx", "\"foo\"", "na");
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testEnsureParameterizedGetterExists_Negative3() {
-        ensureParameterizedGetterExists(String.class, Integer.class, "xxxxxxxxxx", "\\foo", "na");
-    }
 
     @Test
     public void testConstructor() {
         assertNotNull(new AttributeBytecodeGenerator());
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testGetWrapperForPrimitive_NonPrimitiveHandling() {
-        AttributeBytecodeGenerator.getWrapperForPrimitive(String.class);
-    }
-
     // ====== Test helper methods ======
 
     static <O, A, T extends Attribute<O, A>> void validateAttribute(T attribute, Class<O> pojoClass, Class<A> attributeType, String attributeName, O pojo, List<A> expectedPojoValues) {
         Object values = attribute.getValues(pojo, noQueryOptions());
-        assertNotNull("getValues() should not return null", values);
+        assertNotNull(values, "getValues() should not return null");
         assertEquals(pojoClass, attribute.getObjectType());
         assertEquals(attributeType, attribute.getAttributeType());
         assertEquals(attributeName, attribute.getAttributeName());
-        assertTrue("getValues() should return a List, actual was: " + values.getClass().getName(), Iterable.class.isAssignableFrom(values.getClass()));
+        assertTrue(Iterable.class.isAssignableFrom(values.getClass()), "getValues() should return a List, actual was: " + values.getClass().getName());
         List<A> actualAttributeValues = new ArrayList<A>();
         for (A actualValue : attribute.getValues(pojo, noQueryOptions())) {
             actualAttributeValues.add(actualValue);

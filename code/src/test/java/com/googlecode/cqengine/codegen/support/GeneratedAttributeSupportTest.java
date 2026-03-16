@@ -15,68 +15,71 @@
  */
 package com.googlecode.cqengine.codegen.support;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("deprecation")
 public class GeneratedAttributeSupportTest {
 
     @Test
-    public void testAsList_PrimitiveArray() throws Exception {
+    public void testAsList_PrimitiveArray() {
         int[] input = new int[] {1, 2, 3, 4, 5};
         List<Integer> list = GeneratedAttributeSupport.valueOf(input);
-        Assert.assertEquals(5, list.size());
+        assertEquals(5, list.size());
         for (int i = 0; i < 5; i++) {
-            Assert.assertEquals(Integer.valueOf(input[i]), list.get(i));
+            assertEquals(Integer.valueOf(input[i]), list.get(i));
         }
 
         list.set(2, 7);
-        Assert.assertEquals(Integer.valueOf(7), list.get(2));
-        Assert.assertEquals(7, input[2]);
+        assertEquals(Integer.valueOf(7), list.get(2));
+        assertEquals(7, input[2]);
     }
 
     @Test
-    public void testAsList_ObjectArray() throws Exception {
+    public void testAsList_ObjectArray() {
         Integer[] input = new Integer[] {1, 2, 3, 4, 5};
         List<Integer> list = GeneratedAttributeSupport.valueOf(input);
-        Assert.assertEquals(5, list.size());
+        assertEquals(5, list.size());
         for (int i = 0; i < 5; i++) {
-            Assert.assertEquals(input[i], list.get(i));
+            assertEquals(input[i], list.get(i));
         }
 
         list.set(2, 7);
-        Assert.assertEquals(Integer.valueOf(7), list.get(2));
-        Assert.assertEquals(Integer.valueOf(7), input[2]);
+        assertEquals(Integer.valueOf(7), list.get(2));
+        assertEquals(Integer.valueOf(7), input[2]);
     }
 
     @Test
     public void testValueOfPrimitiveMethods() {
-        assertEquals(Byte.valueOf((byte)5), GeneratedAttributeSupport.valueOf((byte)5));
-        assertEquals(Short.valueOf((short)5), GeneratedAttributeSupport.valueOf((short)5));
-        assertEquals(Integer.valueOf(5), GeneratedAttributeSupport.valueOf(5));
-        assertEquals(Long.valueOf(5L), GeneratedAttributeSupport.valueOf(5L));
-        assertEquals(Float.valueOf(5.0F), GeneratedAttributeSupport.valueOf(5.0F));
-        assertEquals(Double.valueOf(5.0), GeneratedAttributeSupport.valueOf(5.0));
-        assertEquals(Boolean.TRUE, GeneratedAttributeSupport.valueOf(true));
-        assertEquals(Character.valueOf('c'), GeneratedAttributeSupport.valueOf('c'));
+        assertAll(
+            () -> assertEquals(Byte.valueOf((byte)5), GeneratedAttributeSupport.valueOf((byte)5)),
+            () -> assertEquals(Short.valueOf((short)5), GeneratedAttributeSupport.valueOf((short)5)),
+            () -> assertEquals(Integer.valueOf(5), GeneratedAttributeSupport.valueOf(5)),
+            () -> assertEquals(Long.valueOf(5L), GeneratedAttributeSupport.valueOf(5L)),
+            () -> assertEquals(Float.valueOf(5.0F), GeneratedAttributeSupport.valueOf(5.0F)),
+            () -> assertEquals(Double.valueOf(5.0), GeneratedAttributeSupport.valueOf(5.0)),
+            () -> assertEquals(Boolean.TRUE, GeneratedAttributeSupport.valueOf(true)),
+            () -> assertEquals(Character.valueOf('c'), GeneratedAttributeSupport.valueOf('c'))
+        );
     }
 
     @Test
     public void testValueOfPrimitiveArrayMethods() {
-        assertEquals(asList((byte)5, (byte)6), GeneratedAttributeSupport.valueOf(new byte[]{(byte)5, (byte)6}));
-        assertEquals(asList((short) 5, (short) 6), GeneratedAttributeSupport.valueOf(new short[]{(short)5, (short)6}));
-        assertEquals(asList(5, 6), GeneratedAttributeSupport.valueOf(new int[]{5, 6}));
-        assertEquals(asList(5L, 6L), GeneratedAttributeSupport.valueOf(new long[]{5L, 6L}));
-        assertEquals(asList(5.0F, 6.0F), GeneratedAttributeSupport.valueOf(new float[]{5.0F, 6.0F}));
-        assertEquals(asList(5.0, 6.0), GeneratedAttributeSupport.valueOf(new double[]{5.0, 6.0}));
-        assertEquals(asList(true, false), GeneratedAttributeSupport.valueOf(new boolean[]{true, false}));
-        assertEquals(asList('c', 'd'), GeneratedAttributeSupport.valueOf(new char[]{'c', 'd'}));
+        assertAll(
+            () -> assertEquals(asList((byte)5, (byte)6), GeneratedAttributeSupport.valueOf(new byte[]{(byte)5, (byte)6})),
+            () -> assertEquals(asList((short) 5, (short) 6), GeneratedAttributeSupport.valueOf(new short[]{(short)5, (short)6})),
+            () -> assertEquals(asList(5, 6), GeneratedAttributeSupport.valueOf(new int[]{5, 6})),
+            () -> assertEquals(asList(5L, 6L), GeneratedAttributeSupport.valueOf(new long[]{5L, 6L})),
+            () -> assertEquals(asList(5.0F, 6.0F), GeneratedAttributeSupport.valueOf(new float[]{5.0F, 6.0F})),
+            () -> assertEquals(asList(5.0, 6.0), GeneratedAttributeSupport.valueOf(new double[]{5.0, 6.0})),
+            () -> assertEquals(asList(true, false), GeneratedAttributeSupport.valueOf(new boolean[]{true, false})),
+            () -> assertEquals(asList('c', 'd'), GeneratedAttributeSupport.valueOf(new char[]{'c', 'd'}))
+        );
     }
 
     @Test

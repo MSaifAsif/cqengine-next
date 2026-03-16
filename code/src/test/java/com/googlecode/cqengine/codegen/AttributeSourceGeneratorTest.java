@@ -15,13 +15,12 @@
  */
 package com.googlecode.cqengine.codegen;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.googlecode.cqengine.codegen.AttributeSourceGenerator.generateAttributesForPastingIntoTargetClass;
 import static com.googlecode.cqengine.codegen.AttributeSourceGenerator.generateSeparateAttributesClass;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Niall Gallagher
