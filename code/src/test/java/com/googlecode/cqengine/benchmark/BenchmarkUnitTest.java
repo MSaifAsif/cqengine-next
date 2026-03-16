@@ -18,11 +18,15 @@ package com.googlecode.cqengine.benchmark;
 import com.googlecode.cqengine.benchmark.tasks.*;
 import com.googlecode.cqengine.testutil.Car;
 import com.googlecode.cqengine.testutil.CarFactory;
-import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Collection;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for the benchmark itself.
@@ -33,135 +37,31 @@ public class BenchmarkUnitTest {
 
     private final Collection<Car> collection = CarFactory.createCollectionOfCars(1000);
 
-    @Test
-    public void testHashIndex_ModelFocus() {
-        BenchmarkTask task = new HashIndex_ModelFocus();
+    @ParameterizedTest
+    @MethodSource("benchmarkCases")
+    void testBenchmarkTask(BenchmarkTask task, int expectedCount) {
         task.init(collection);
-
-        assertEquals(100, task.runQueryCountResults_IterationNaive());
-        assertEquals(100, task.runQueryCountResults_IterationOptimized());
-        assertEquals(100, task.runQueryCountResults_CQEngine());
-        assertEquals(100, task.runQueryCountResults_CQEngineStatistics());
+        assertAll(
+                () -> assertEquals(expectedCount, task.runQueryCountResults_IterationNaive()),
+                () -> assertEquals(expectedCount, task.runQueryCountResults_IterationOptimized()),
+                () -> assertEquals(expectedCount, task.runQueryCountResults_CQEngine()),
+                () -> assertEquals(expectedCount, task.runQueryCountResults_CQEngineStatistics())
+        );
     }
-
-    @Test
-    public void testHashIndex_ManufacturerFord() {
-        BenchmarkTask task = new HashIndex_ManufacturerFord();
-        task.init(collection);
-
-        assertEquals(300, task.runQueryCountResults_IterationNaive());
-        assertEquals(300, task.runQueryCountResults_IterationOptimized());
-        assertEquals(300, task.runQueryCountResults_CQEngine());
-        assertEquals(300, task.runQueryCountResults_CQEngineStatistics());
-    }
-
-    @Test
-    public void testNavigableIndex_PriceBetween() {
-        BenchmarkTask task = new NavigableIndex_PriceBetween();
-        task.init(collection);
-
-        assertEquals(200, task.runQueryCountResults_IterationNaive());
-        assertEquals(200, task.runQueryCountResults_IterationOptimized());
-        assertEquals(200, task.runQueryCountResults_CQEngine());
-        assertEquals(200, task.runQueryCountResults_CQEngineStatistics());
-    }
-
-    @Test
-    public void testCompoundIndex_ManufacturerToyotaColorBlueDoorsThree() {
-        BenchmarkTask task = new CompoundIndex_ManufacturerToyotaColorBlueDoorsThree();
-        task.init(collection);
-
-        assertEquals(100, task.runQueryCountResults_IterationNaive());
-        assertEquals(100, task.runQueryCountResults_IterationOptimized());
-        assertEquals(100, task.runQueryCountResults_CQEngine());
-        assertEquals(100, task.runQueryCountResults_CQEngineStatistics());
-    }
-
-    @Test
-    public void testStandingQueryIndex_ManufacturerToyotaColorBlueDoorsNotFive() {
-        BenchmarkTask task = new StandingQueryIndex_ManufacturerToyotaColorBlueDoorsNotFive();
-        task.init(collection);
-
-        assertEquals(100, task.runQueryCountResults_IterationNaive());
-        assertEquals(100, task.runQueryCountResults_IterationOptimized());
-        assertEquals(100, task.runQueryCountResults_CQEngine());
-        assertEquals(100, task.runQueryCountResults_CQEngineStatistics());
-    }
-
-    @Test
-    public void testRadixTreeIndex_ModelStartsWithF() {
-        BenchmarkTask task = new RadixTreeIndex_ModelStartsWithP();
-        task.init(collection);
-
-        assertEquals(100, task.runQueryCountResults_IterationNaive());
-        assertEquals(100, task.runQueryCountResults_IterationOptimized());
-        assertEquals(100, task.runQueryCountResults_CQEngine());
-        assertEquals(100, task.runQueryCountResults_CQEngineStatistics());
-    }
-
-    @Test
-    public void testSuffixTreeIndex_ModelContainsI() {
-        BenchmarkTask task = new SuffixTreeIndex_ModelContainsG();
-        task.init(collection);
-
-        assertEquals(100, task.runQueryCountResults_IterationNaive());
-        assertEquals(100, task.runQueryCountResults_IterationOptimized());
-        assertEquals(100, task.runQueryCountResults_CQEngine());
-        assertEquals(100, task.runQueryCountResults_CQEngineStatistics());
-    }
-
-    @Test
-    public void testHashIndex_CarId() {
-        BenchmarkTask task = new HashIndex_CarId();
-        task.init(collection);
-
-        assertEquals(1, task.runQueryCountResults_IterationNaive());
-        assertEquals(1, task.runQueryCountResults_IterationOptimized());
-        assertEquals(1, task.runQueryCountResults_CQEngine());
-        assertEquals(1, task.runQueryCountResults_CQEngineStatistics());
-    }
-    
-    @Test
-    public void testQuantized_HashIndex_CarId() {
-        BenchmarkTask task = new Quantized_HashIndex_CarId();
-        task.init(collection);
-
-        assertEquals(1, task.runQueryCountResults_IterationNaive());
-        assertEquals(1, task.runQueryCountResults_IterationOptimized());
-        assertEquals(1, task.runQueryCountResults_CQEngine());
-        assertEquals(1, task.runQueryCountResults_CQEngineStatistics());
-    }
-
-    @Test
-    public void testQuantized_NavigableIndex_CarId() {
-        BenchmarkTask task = new Quantized_NavigableIndex_CarId();
-        task.init(collection);
-
-        assertEquals(3, task.runQueryCountResults_IterationNaive());
-        assertEquals(3, task.runQueryCountResults_IterationOptimized());
-        assertEquals(3, task.runQueryCountResults_CQEngine());
-        assertEquals(3, task.runQueryCountResults_CQEngineStatistics());
-    }
-
-    @Test
-    public void testNonOptimalIndexes() {
-        BenchmarkTask task = new NonOptimalIndexes_ManufacturerToyotaColorBlueDoorsThree();
-        task.init(collection);
-
-        assertEquals(100, task.runQueryCountResults_IterationNaive());
-        assertEquals(100, task.runQueryCountResults_IterationOptimized());
-        assertEquals(100, task.runQueryCountResults_CQEngine());
-        assertEquals(100, task.runQueryCountResults_CQEngineStatistics());
-    }
-
-    @Test
-    public void testMaterializedOrder_CardId() {
-        BenchmarkTask task = new MaterializedOrder_CardId();
-        task.init(collection);
-
-        assertEquals(100, task.runQueryCountResults_IterationNaive());
-        assertEquals(100, task.runQueryCountResults_IterationOptimized());
-        assertEquals(100, task.runQueryCountResults_CQEngine());
-        assertEquals(100, task.runQueryCountResults_CQEngineStatistics());
+    static Stream<Arguments> benchmarkCases() {
+        return Stream.of(
+                Arguments.of(new HashIndex_ModelFocus(), 100),
+                Arguments.of(new HashIndex_ManufacturerFord(), 300),
+                Arguments.of(new NavigableIndex_PriceBetween(), 200),
+                Arguments.of(new CompoundIndex_ManufacturerToyotaColorBlueDoorsThree(), 100),
+                Arguments.of(new StandingQueryIndex_ManufacturerToyotaColorBlueDoorsNotFive(), 100),
+                Arguments.of(new RadixTreeIndex_ModelStartsWithP(), 100),
+                Arguments.of(new SuffixTreeIndex_ModelContainsG(), 100),
+                Arguments.of(new HashIndex_CarId(), 1),
+                Arguments.of(new Quantized_HashIndex_CarId(), 1),
+                Arguments.of(new Quantized_NavigableIndex_CarId(), 3),
+                Arguments.of(new NonOptimalIndexes_ManufacturerToyotaColorBlueDoorsThree(), 100),
+                Arguments.of(new MaterializedOrder_CardId(), 100)
+        );
     }
 }
