@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Upgraded `slf4j-simple` from `1.7.36` to `2.0.17` (test scope)
+- Upgraded `sqlite-jdbc` from `3.45.0.0` to `3.51.3.0` (latest stable, released Mar 16, 2026)
+
+
 ## [Released 1.0.0] - 2025-12-21
 - Initial release of maintained fork `io.github.msaifasif:cqengine:1.0.0` based on original `com.googlecode.cqengine:cqengine:3.6.0` with all changes from [1.0.0-SNAPSHOT](#100-snapshot---2025-12-19) included.
 
