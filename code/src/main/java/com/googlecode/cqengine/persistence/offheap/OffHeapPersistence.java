@@ -88,6 +88,7 @@ import static com.googlecode.cqengine.query.option.FlagsEnabled.isFlagEnabled;
  * the persistence file located on a ram disk.
  *
  * @author niall.gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class OffHeapPersistence<O, A extends Comparable<A>> implements SQLitePersistence<O, A>, Closeable {
 
@@ -224,10 +225,9 @@ public class OffHeapPersistence<O, A extends Comparable<A>> implements SQLitePer
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OffHeapPersistence)) {
+        if (!(o instanceof OffHeapPersistence<?, ?> that)) {
             return false;
         }
-        OffHeapPersistence<?, ?> that = (OffHeapPersistence<?, ?>) o;
         return primaryKeyAttribute.equals(that.primaryKeyAttribute) && instanceName.equals(that.instanceName);
     }
 
@@ -280,8 +280,8 @@ public class OffHeapPersistence<O, A extends Comparable<A>> implements SQLitePer
     @Override
     public void closeRequestScopeResources(QueryOptions queryOptions) {
         ConnectionManager connectionManager = queryOptions.get(ConnectionManager.class);
-        if (connectionManager instanceof RequestScopeConnectionManager) {
-            ((RequestScopeConnectionManager) connectionManager).close();
+        if (connectionManager instanceof RequestScopeConnectionManager cm) {
+            cm.close();
             queryOptions.remove(ConnectionManager.class);
         }
     }

@@ -33,6 +33,7 @@ import java.util.concurrent.ConcurrentMap;
  * The collection itself will be persisted to the primary persistence object supplied to the constructor.
  *
  * @author niall.gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class CompositePersistence<O, A extends Comparable<A>> implements Persistence<O, A> {
 
@@ -187,8 +188,8 @@ public class CompositePersistence<O, A extends Comparable<A>> implements Persist
     @Override
     public void closeRequestScopeResources(QueryOptions queryOptions) {
         ConnectionManager connectionManager = queryOptions.get(ConnectionManager.class);
-        if (connectionManager instanceof RequestScopeConnectionManager) {
-            ((RequestScopeConnectionManager) connectionManager).close();
+        if (connectionManager instanceof RequestScopeConnectionManager cm) {
+            cm.close();
             queryOptions.remove(ConnectionManager.class);
         }
     }
