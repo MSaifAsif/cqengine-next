@@ -107,11 +107,13 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
         @SuppressWarnings("unchecked")
         Persistence<O, ? extends Comparable> persistenceFromQueryOptions = getPersistenceFromQueryOptions(queryOptions);
         this.persistence = persistenceFromQueryOptions;
-        if (objectStore instanceof SQLiteObjectStore) {
+        if (objectStore instanceof SQLiteObjectStore sqLiteObjectStore) {
             // If the collection is backed by a SQLiteObjectStore, add the backing index of the SQLiteObjectStore
             // so that it can also be used as a regular index to accelerate queries...
-            SQLiteObjectStore<O, ? extends Comparable<?>> sqLiteObjectStore = (SQLiteObjectStore<O, ? extends Comparable<?>>)objectStore;
-            SQLiteIdentityIndex<? extends Comparable<?>, O> backingIndex = sqLiteObjectStore.getBackingIndex();
+            // NOTE: Using pattern matching with raw type here to avoid complex 
+            // generic type safety issues with Java 21 type erasure.
+            @SuppressWarnings("unchecked")
+            SQLiteIdentityIndex<? extends Comparable<?>, O> backingIndex = (SQLiteIdentityIndex<? extends Comparable<?>, O>) sqLiteObjectStore.getBackingIndex();
             addIndex(backingIndex, queryOptions);
         }
 
@@ -143,25 +145,18 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
      */
     @Override
     public void addIndex(Index<O> index, QueryOptions queryOptions) {
-        if (index instanceof StandingQueryIndex) {
-            @SuppressWarnings({"unchecked"})
-            StandingQueryIndex<O> standingQueryIndex = (StandingQueryIndex<O>) index;
+        if (index instanceof StandingQueryIndex<O> standingQueryIndex) {
             addStandingQueryIndex(standingQueryIndex, standingQueryIndex.getStandingQuery(), queryOptions);
         }
-        else if (index instanceof CompoundIndex) {
-            @SuppressWarnings({"unchecked"})
-            CompoundIndex<O> compoundIndex = (CompoundIndex<O>) index;
+        else if (index instanceof CompoundIndex<O> compoundIndex) {
             CompoundAttribute<O> compoundAttribute = compoundIndex.getAttribute();
             addCompoundIndex(compoundIndex, compoundAttribute, queryOptions);
         }
-        else if (index instanceof AttributeIndex) {
-            @SuppressWarnings({"unchecked"})
-            AttributeIndex<?, O> attributeIndex = (AttributeIndex<?, O>) index;
+        else if (index instanceof AttributeIndex<?, O> attributeIndex) {
             Attribute<O, ?> indexedAttribute = attributeIndex.getAttribute();
-            if (indexedAttribute instanceof StandingQueryAttribute) {
+            if (indexedAttribute instanceof StandingQueryAttribute standingQueryAttribute) {
                 @SuppressWarnings("unchecked")
-                StandingQueryAttribute<O> standingQueryAttribute = (StandingQueryAttribute<O>) indexedAttribute;
-                Query<O> standingQuery = standingQueryAttribute.getQuery();
+                Query<O> standingQuery = (Query<O>) standingQueryAttribute.getQuery();
                 addStandingQueryIndex(index, standingQuery, queryOptions);
             }
             else {
@@ -249,28 +244,20 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
     @Override
     public void removeIndex(Index<O> index, QueryOptions queryOptions) {
         boolean removed;
-        if (index instanceof StandingQueryIndex) {
-            @SuppressWarnings({"unchecked"})
-            StandingQueryIndex<O> standingQueryIndex = (StandingQueryIndex<O>) index;
-
+        if (index instanceof StandingQueryIndex<O> standingQueryIndex) {
             removed = standingQueryIndexes.remove(standingQueryIndex.getStandingQuery(), standingQueryIndex);
         }
-        else if (index instanceof CompoundIndex) {
-            @SuppressWarnings({"unchecked"})
-            CompoundIndex<O> compoundIndex = (CompoundIndex<O>) index;
+        else if (index instanceof CompoundIndex<O> compoundIndex) {
             CompoundAttribute<O> compoundAttribute = compoundIndex.getAttribute();
 
             removed = compoundIndexes.remove(compoundAttribute, compoundIndex);
         }
-        else if (index instanceof AttributeIndex) {
-            @SuppressWarnings({"unchecked"})
-            AttributeIndex<?, O> attributeIndex = (AttributeIndex<?, O>) index;
+        else if (index instanceof AttributeIndex<?, O> attributeIndex) {
             Attribute<O, ?> indexedAttribute = attributeIndex.getAttribute();
 
-            if (indexedAttribute instanceof StandingQueryAttribute) {
+            if (indexedAttribute instanceof StandingQueryAttribute standingQueryAttribute) {
                 @SuppressWarnings("unchecked")
-                StandingQueryAttribute<O> standingQueryAttribute = (StandingQueryAttribute<O>) indexedAttribute;
-                Query<O> standingQuery = standingQueryAttribute.getQuery();
+                Query<O> standingQuery = (Query<O>) standingQueryAttribute.getQuery();
 
                 removed = standingQueryIndexes.remove(standingQuery, index);
             }
@@ -493,9 +480,9 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
                 AttributeOrder<O> firstOrder = allSortOrders.iterator().next();
                 @SuppressWarnings("unchecked")
                 Attribute<O, Comparable> firstAttribute = (Attribute<O, Comparable>)firstOrder.getAttribute();
-                if (firstAttribute instanceof OrderControlAttribute) {
+                if (firstAttribute instanceof OrderControlAttribute orderControlAttribute) {
                     @SuppressWarnings("unchecked")
-                    Attribute<O, Comparable> firstAttributeDelegate = ((OrderControlAttribute)firstAttribute).getDelegateAttribute();
+                    Attribute<O, Comparable> firstAttributeDelegate = orderControlAttribute.getDelegateAttribute();
                     firstAttribute = firstAttributeDelegate;
                 }
 
@@ -642,8 +629,8 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
         // assign it here...
         @SuppressWarnings("unchecked")
         final OrderControlAttribute<O> orderControlAttribute =
-                (primarySortOrder.getAttribute() instanceof OrderControlAttribute)
-                        ? (OrderControlAttribute<O>)primarySortOrder.getAttribute() : null;
+                (primarySortOrder.getAttribute() instanceof OrderControlAttribute oca)
+                        ? oca : null;
 
         // If the first attribute by which results should be ordered was wrapped, unwrap it, and assign it here...
         @SuppressWarnings("unchecked")
@@ -944,8 +931,7 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
         if (query instanceof SimpleQuery) {
             candidateRangeQueries = Collections.<SimpleQuery<O, ?>>singletonList((SimpleQuery<O, ?>) query);
         }
-        else if (query instanceof And) {
-            And<O> and = (And<O>)query;
+        else if (query instanceof And<O> and) {
             if (and.hasSimpleQueries()) {
                 candidateRangeQueries = and.getSimpleQueries();
             }
@@ -1013,20 +999,18 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
         // ..else no standing query index was available, process the query normally...
 
 
-        if (query instanceof SimpleQuery) {
+        if (query instanceof SimpleQuery<O, ?> simpleQuery) {
             // No deduplication required for a single SimpleQuery.
             // Return the ResultSet from the index with the lowest retrieval cost which supports
             // this query and the attribute on which it is based...
-            return retrieveSimpleQuery((SimpleQuery<O, ?>) query, queryOptions);
+            return retrieveSimpleQuery(simpleQuery, queryOptions);
         }
-        else if (query instanceof ComparativeQuery) {
+        else if (query instanceof ComparativeQuery<O, ?> comparativeQuery) {
             // Return the ResultSet from the index with the lowest retrieval cost which supports
             // this query and the attribute on which it is based...
-            return retrieveComparativeQuery((ComparativeQuery<O, ?>) query, queryOptions);
+            return retrieveComparativeQuery(comparativeQuery, queryOptions);
         }
-        else if (query instanceof And) {
-            final And<O> and = (And<O>) query;
-
+        else if (query instanceof And<O> and) {
             // Check if we can process this And query from a compound index...
             if (!compoundIndexes.isEmpty()) {
                 // Compound indexes exist. Check if any can be used for this And query...
@@ -1076,8 +1060,7 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
             boolean useIndexMergeStrategy = shouldUseIndexMergeStrategy(indexMergeStrategyEnabled, and.hasComparativeQueries(), resultSetsToMerge);
             return new ResultSetIntersection<O>(resultSetsToMerge, query, queryOptions, useIndexMergeStrategy);
         }
-        else if (query instanceof Or) {
-            final Or<O> or = (Or<O>) query;
+        else if (query instanceof Or<O> or) {
             // If the Or query indicates child queries are disjoint,
             // ignore any instruction to perform deduplication in the queryOptions supplied...
             final QueryOptions queryOptionsForOrUnion;
@@ -1158,8 +1141,7 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
             }
             return union;
         }
-        else if (query instanceof Not) {
-            final Not<O> not = (Not<O>) query;
+        else if (query instanceof Not<O> not) {
             // No deduplication required for negation (the entire collection is a Set, contains no duplicates).
             // Retrieve the ResultSet for the negated query, by calling this method recursively...
             ResultSet<O> resultSetToNegate = retrieveRecursive(not.getNegatedQuery(), queryOptions);
