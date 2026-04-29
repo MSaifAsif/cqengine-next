@@ -85,9 +85,7 @@ public abstract class AbstractAttribute<O, A> implements Attribute<O, A> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AbstractAttribute)) return false;
-
-        AbstractAttribute that = (AbstractAttribute) o;
+        if (!(o instanceof AbstractAttribute that)) return false;
 
         // TODO: reinstate this cachedHashCode comparison once EqualsVerifier supports cached hash code "shortcut":
         //if (cachedHashCode != that.cachedHashCode) return false;
@@ -121,8 +119,7 @@ public abstract class AbstractAttribute<O, A> implements Attribute<O, A> {
             @SuppressWarnings({"unchecked", "UnnecessaryLocalVariable"})
             Type actualType = superclass.getActualTypeArguments()[0];
             Class<O> cls;
-            if (actualType instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType)actualType;
+            if (actualType instanceof ParameterizedType parameterizedType) {
                 @SuppressWarnings({"unchecked", "UnnecessaryLocalVariable"})
                 Class<O> actualClass = (Class<O>) parameterizedType.getRawType();
                 cls = actualClass;
@@ -145,8 +142,7 @@ public abstract class AbstractAttribute<O, A> implements Attribute<O, A> {
             ParameterizedType superclass = (ParameterizedType) attributeClass.getGenericSuperclass();
             Type actualType = superclass.getActualTypeArguments()[1];
             Class<A> cls;
-            if (actualType instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType)actualType;
+            if (actualType instanceof ParameterizedType parameterizedType) {
                 @SuppressWarnings({"unchecked", "UnnecessaryLocalVariable"})
                 Class<A> actualClass = (Class<A>) parameterizedType.getRawType();
                 cls = actualClass;
