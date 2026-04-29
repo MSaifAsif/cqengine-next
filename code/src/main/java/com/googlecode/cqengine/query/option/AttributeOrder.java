@@ -24,6 +24,7 @@ import com.googlecode.cqengine.attribute.OrderMissingLastAttribute;
  * Represents an attribute and an associated preference for sorting results according to that attribute
  * in ascending or descending order.
  *
+ * @author Lautaro Eduardo Eber Luna
  * @author Roberto Socrates
  * @author Niall Gallagher
  */
@@ -48,16 +49,14 @@ public class AttributeOrder<O> {
 
     @Override
     public String toString() {
-        if (attribute instanceof OrderMissingLastAttribute) {
-            OrderControlAttribute orderControlAttribute = (OrderControlAttribute) attribute;
+        if (attribute instanceof OrderMissingLastAttribute orderControlAttribute) {
             @SuppressWarnings("unchecked")
             Attribute<O, ? extends Comparable> delegateAttribute = orderControlAttribute.getDelegateAttribute();
             return descending
                     ? "descending(missingLast(" + delegateAttribute.getObjectType().getSimpleName() + "." + delegateAttribute.getAttributeName() + "))"
                     : "ascending(missingLast(" + delegateAttribute.getObjectType().getSimpleName() + "." + delegateAttribute.getAttributeName() + "))";
         }
-        if (attribute instanceof OrderMissingFirstAttribute) {
-            OrderControlAttribute orderControlAttribute = (OrderControlAttribute) attribute;
+        if (attribute instanceof OrderMissingFirstAttribute orderControlAttribute) {
             @SuppressWarnings("unchecked")
             Attribute<O, ? extends Comparable> delegateAttribute = orderControlAttribute.getDelegateAttribute();
             return descending
@@ -74,9 +73,7 @@ public class AttributeOrder<O> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AttributeOrder)) return false;
-
-        AttributeOrder that = (AttributeOrder) o;
+        if (!(o instanceof AttributeOrder that)) return false;
 
         if (descending != that.descending) return false;
         if (!attribute.equals(that.attribute)) return false;

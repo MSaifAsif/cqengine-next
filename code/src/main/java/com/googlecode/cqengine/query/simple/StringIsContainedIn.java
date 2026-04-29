@@ -25,6 +25,7 @@ import static com.googlecode.cqengine.query.support.QueryValidation.checkQueryVa
  * Asserts than a {@link CharSequence}-based attribute is contained in a given {@link CharSequence}-based document.
 
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class StringIsContainedIn<O, A extends CharSequence> extends SimpleQuery<O, A> {
 
@@ -66,9 +67,7 @@ public class StringIsContainedIn<O, A extends CharSequence> extends SimpleQuery<
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof StringIsContainedIn)) return false;
-
-        StringIsContainedIn that = (StringIsContainedIn) o;
+        if (!(o instanceof StringIsContainedIn that)) return false;
 
         if (!attribute.equals(that.attribute)) return false;
         if (!value.equals(that.value)) return false;

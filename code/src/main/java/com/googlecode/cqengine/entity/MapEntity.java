@@ -74,11 +74,10 @@ public class MapEntity implements Map {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MapEntity)) {
+        if (!(o instanceof MapEntity that)) {
             return false;
         }
 
-        MapEntity that = (MapEntity) o;
         if (cachedHashCode != that.cachedHashCode) {
             return false;
         }

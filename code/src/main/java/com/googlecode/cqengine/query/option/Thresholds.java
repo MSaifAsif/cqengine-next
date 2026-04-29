@@ -28,6 +28,7 @@ import java.util.Map;
  * <code>QueryOptions queryOptions = queryOptions(applyThresholds(INDEX_ORDERING_SELECTIVITY, 0.4))</code>
  *
  * @author niall.gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class Thresholds {
 
@@ -44,10 +45,10 @@ public class Thresholds {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Thresholds)) {
+        if (!(o instanceof Thresholds that)) {
             return false;
         }
-        Thresholds that = (Thresholds) o;
+
         return thresholds.equals(that.thresholds);
     }
 

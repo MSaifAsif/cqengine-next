@@ -25,6 +25,7 @@ import static com.googlecode.cqengine.query.support.QueryValidation.checkQueryVa
  * Asserts than a {@link CharSequence}-based attribute starts with a given {@link CharSequence}-based prefix.
 
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class StringStartsWith<O, A extends CharSequence> extends SimpleQuery<O, A> {
 
@@ -76,9 +77,7 @@ public class StringStartsWith<O, A extends CharSequence> extends SimpleQuery<O, 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof StringStartsWith)) return false;
-
-        StringStartsWith that = (StringStartsWith) o;
+        if (!(o instanceof StringStartsWith that)) return false;
 
         if (!attribute.equals(that.attribute)) return false;
         if (!value.equals(that.value)) return false;

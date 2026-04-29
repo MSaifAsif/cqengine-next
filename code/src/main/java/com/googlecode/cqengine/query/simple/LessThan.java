@@ -25,6 +25,7 @@ import static com.googlecode.cqengine.query.support.QueryValidation.checkQueryVa
  * Asserts than an attribute is less than an upper bound.
  *
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class LessThan<O, A extends Comparable<A>> extends SimpleQuery<O, A> {
 
@@ -93,9 +94,7 @@ public class LessThan<O, A extends Comparable<A>> extends SimpleQuery<O, A> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LessThan)) return false;
-
-        LessThan lessThan = (LessThan) o;
+        if (!(o instanceof LessThan lessThan)) return false;
 
         if (!attribute.equals(lessThan.attribute)) return false;
         if (valueInclusive != lessThan.valueInclusive) return false;

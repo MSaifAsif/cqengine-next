@@ -139,9 +139,7 @@ public class Between<O, A extends Comparable<A>> extends SimpleQuery<O, A> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Between)) return false;
-
-        Between between = (Between) o;
+        if (!(o instanceof Between between)) return false;
 
         if (!attribute.equals(between.attribute)) return false;
         if (lowerInclusive != between.lowerInclusive) return false;

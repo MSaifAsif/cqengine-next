@@ -365,21 +365,21 @@ public class AttributeSourceGenerator {
     }
 
     static Class<?> getType(Member member) {
-        if (member instanceof Field) {
-            return ((Field) member).getType();
+        if (member instanceof Field m) {
+            return m.getType();
         }
-        else if (member instanceof Method) {
-            return ((Method) member).getReturnType();
+        else if (member instanceof Method m) {
+            return m.getReturnType();
         }
         else throw new IllegalStateException("Unsupported member type: " + member);
     }
 
     static ParameterizedType getGenericType(Member member) {
-        if (member instanceof Field) {
-            return (ParameterizedType)((Field) member).getGenericType();
+        if (member instanceof Field m) {
+            return (ParameterizedType) m.getGenericType();
         }
-        else if (member instanceof Method) {
-            return (ParameterizedType)((Method) member).getGenericReturnType();
+        else if (member instanceof Method m) {
+            return (ParameterizedType) m.getGenericReturnType();
         }
         else throw new IllegalStateException("Unsupported member type: " + member);
     }

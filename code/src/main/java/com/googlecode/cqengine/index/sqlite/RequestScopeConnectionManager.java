@@ -39,6 +39,7 @@ import java.util.concurrent.ConcurrentMap;
  * correct persistence to use for the index requesting the connection.
  *
  * @author niall.gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class RequestScopeConnectionManager implements ConnectionManager, Closeable {
 
@@ -88,16 +89,15 @@ public class RequestScopeConnectionManager implements ConnectionManager, Closeab
 
     @SuppressWarnings("unchecked")
     SQLitePersistence getPersistenceForIndex(Index<?> index) {
-        if (persistence instanceof SQLitePersistence) {
-            if (persistence.supportsIndex((Index)index)) {
-                return (SQLitePersistence) persistence;
+        if (persistence instanceof SQLitePersistence sqLitePersistence) {
+            if (sqLitePersistence.supportsIndex((Index)index)) {
+                return sqLitePersistence;
             }
         }
-        else if (persistence instanceof CompositePersistence) {
-            CompositePersistence compositePersistence = ((CompositePersistence) persistence);
+        else if (persistence instanceof CompositePersistence compositePersistence) {
             Persistence indexPersistence = compositePersistence.getPersistenceForIndex(index);
-            if (indexPersistence instanceof SQLitePersistence) {
-                return (SQLitePersistence) indexPersistence;
+            if (indexPersistence instanceof SQLitePersistence sqLitePersistence) {
+                return sqLitePersistence;
             }
         }
         throw new IllegalStateException("No configured Persistence implementation can support the given index: " + index);

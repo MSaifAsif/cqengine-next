@@ -69,9 +69,7 @@ public class QueryOptions {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof QueryOptions)) return false;
-
-        QueryOptions that = (QueryOptions) o;
+        if (!(o instanceof QueryOptions that)) return false;
 
         if (!options.equals(that.options)) return false;
 

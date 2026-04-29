@@ -25,6 +25,7 @@ import java.util.Set;
  * Asserts that an attribute has at least one of the values specified by the In query.
  *
  * @author Silvano Riz
+ * @author Lautaro Eduardo Eber Luna
  */
 public class In<O, A> extends SimpleQuery<O, A> {
 
@@ -73,9 +74,7 @@ public class In<O, A> extends SimpleQuery<O, A> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof In)) return false;
-
-        In<?, ?> in = (In<?, ?>) o;
+        if (!(o instanceof In<?, ?> in)) return false;
 
         if (disjoint != in.disjoint) return false;
         if (!attribute.equals(in.attribute)) return false;

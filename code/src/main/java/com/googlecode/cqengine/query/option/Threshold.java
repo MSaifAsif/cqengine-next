@@ -22,6 +22,7 @@ package com.googlecode.cqengine.query.option;
  * See {@link EngineThresholds} for information about some thresholds which can be set.
  *
  * @author niall.gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class Threshold {
 
@@ -38,11 +39,9 @@ public class Threshold {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Threshold)) {
+        if (!(o instanceof Threshold threshold)) {
             return false;
         }
-
-        Threshold threshold = (Threshold) o;
 
         if (!key.equals(threshold.key)) {
             return false;

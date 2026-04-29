@@ -67,9 +67,7 @@ public class StringIsPrefixOf<O, A extends CharSequence> extends SimpleQuery<O, 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof StringIsPrefixOf)) return false;
-
-        StringIsPrefixOf<?, ?> that = (StringIsPrefixOf<?, ?>) o;
+        if (!(o instanceof StringIsPrefixOf<?, ?> that)) return false;
 
         if (!attribute.equals(that.attribute)) return false;
         if (!value.equals(that.value)) return false;

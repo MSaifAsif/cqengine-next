@@ -19,6 +19,7 @@ import java.util.Map;
 
 /**
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class DeduplicationOption {
 
@@ -66,9 +67,7 @@ public class DeduplicationOption {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof DeduplicationOption)) return false;
-
-        DeduplicationOption that = (DeduplicationOption) o;
+        if (!(o instanceof DeduplicationOption that)) return false;
 
         if (strategy != that.strategy) return false;
 

@@ -22,6 +22,7 @@ import java.util.List;
  * Represents a list of attributes and associated preferences for sorting results according to those attributes each
  * in ascending or descending order.
  *
+ * @author Lautaro Eduardo Eber Luna
  * @author Roberto Socrates
  * @author Niall Gallagher
  */
@@ -58,9 +59,7 @@ public class OrderByOption<O> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OrderByOption)) return false;
-
-        OrderByOption that = (OrderByOption) o;
+        if (!(o instanceof OrderByOption that)) return false;
 
         if (!attributeOrders.equals(that.attributeOrders)) return false;
 

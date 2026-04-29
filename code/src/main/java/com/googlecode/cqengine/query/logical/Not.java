@@ -27,6 +27,7 @@ import static java.util.Objects.requireNonNull;
  * from the child query.
  *
  * @author ngallagher
+ * @author Lautaro Eduardo Eber Luna
  * @since 2012-04-30 17:00
  */
 public class Not<O> extends LogicalQuery<O> {
@@ -54,9 +55,7 @@ public class Not<O> extends LogicalQuery<O> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Not)) return false;
-
-        Not other = (Not) o;
+        if (!(o instanceof Not other)) return false;
 
         if (!negatedQuery.equals(other.negatedQuery)) return false;
 

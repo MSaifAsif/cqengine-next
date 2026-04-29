@@ -26,6 +26,7 @@ import java.util.Iterator;
  * from child queries.
  * 
  * @author ngallagher
+ * @author Lautaro Eduardo Eber Luna
  * @since 2012-04-30 17:00
  */
 public class And<O> extends LogicalQuery<O> {
@@ -63,9 +64,7 @@ public class And<O> extends LogicalQuery<O> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof And)) return false;
-
-        And and = (And) o;
+        if (!(o instanceof And and)) return false;
 
         if (!childQueries.equals(and.childQueries)) return false;
 

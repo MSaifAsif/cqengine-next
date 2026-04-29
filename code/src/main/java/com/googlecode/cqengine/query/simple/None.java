@@ -28,6 +28,7 @@ import static com.googlecode.cqengine.query.support.QueryValidation.checkObjectT
  * This is equivalent to a literal boolean 'false'.
  *
  * @author ngallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class None<O> extends SimpleQuery<O, O> {
 
@@ -56,8 +57,7 @@ public class None<O> extends SimpleQuery<O, O> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof None)) return false;
-        None that = (None) o;
+        if (!(o instanceof None that)) return false;
         return this.objectType.equals(that.objectType);
     }
 

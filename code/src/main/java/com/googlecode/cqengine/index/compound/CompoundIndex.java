@@ -50,6 +50,7 @@ import java.util.concurrent.ConcurrentMap;
  * For default settings, supply {@link DefaultIndexMapFactory} and {@link DefaultValueSetFactory}.
  *
  * @author Niall Gallagher
+ * @author Lautaro Luna
  */
 public class CompoundIndex<O> extends AbstractMapBasedAttributeIndex<CompoundValueTuple<O>, O, ConcurrentMap<CompoundValueTuple<O>, StoredResultSet<O>>> implements KeyStatisticsAttributeIndex<CompoundValueTuple<O>, O>, OnHeapTypeIndex {
 
@@ -82,8 +83,7 @@ public class CompoundIndex<O> extends AbstractMapBasedAttributeIndex<CompoundVal
      */
     @Override
     public boolean supportsQuery(Query<O> query, QueryOptions queryOptions) {
-        if (query instanceof CompoundQuery) {
-            CompoundQuery<O> compoundQuery = (CompoundQuery<O>) query;
+        if (query instanceof CompoundQuery<O> compoundQuery) {
             return attribute.equals(compoundQuery.getCompoundAttribute());
         }
         return false;

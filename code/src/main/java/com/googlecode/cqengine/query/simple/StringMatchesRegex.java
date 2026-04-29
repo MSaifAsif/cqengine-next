@@ -28,7 +28,7 @@ import static com.googlecode.cqengine.query.support.QueryValidation.checkQueryVa
  * <p/>
  * To accelerate {@code matchesRegex(...)} queries, add a Standing Query Index on {@code matchesRegex(...)}.
  *
- * @author Niall Gallagher, Silvano Riz
+ * @author Niall Gallagher, Silvano Riz, Lautaro Eduardo Eber Luna
  */
 public class StringMatchesRegex<O, A extends CharSequence> extends SimpleQuery<O, A> {
 
@@ -71,8 +71,7 @@ public class StringMatchesRegex<O, A extends CharSequence> extends SimpleQuery<O
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof StringMatchesRegex)) return false;
-        StringMatchesRegex that = (StringMatchesRegex) o;
+        if (!(o instanceof StringMatchesRegex that)) return false;
         return this.attribute.equals(that.attribute)
                 && this.regexPattern.pattern().equals(that.regexPattern.pattern())
                 && this.regexPattern.flags() == that.regexPattern.flags();

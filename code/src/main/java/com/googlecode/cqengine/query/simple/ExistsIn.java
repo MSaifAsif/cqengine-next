@@ -106,9 +106,7 @@ final IndexedCollection<F> foreignCollection;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ExistsIn)) return false;
-
-        ExistsIn existsIn = (ExistsIn) o;
+        if (!(o instanceof ExistsIn existsIn)) return false;
 
         if (!foreignKeyAttribute.equals(existsIn.foreignKeyAttribute)) return false;
         if (foreignRestrictions != null ? !foreignRestrictions.equals(existsIn.foreignRestrictions) : existsIn.foreignRestrictions != null)

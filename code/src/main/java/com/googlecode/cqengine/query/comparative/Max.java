@@ -42,9 +42,7 @@ public class Max<O, A extends Comparable<A>> extends SimpleComparativeQuery<O, A
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Max)) return false;
-
-        Max max = (Max) o;
+        if (!(o instanceof Max max)) return false;
 
         return super.attribute.equals(max.attribute);
     }

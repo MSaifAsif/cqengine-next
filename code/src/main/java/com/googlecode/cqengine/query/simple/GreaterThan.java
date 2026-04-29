@@ -93,9 +93,7 @@ public class GreaterThan<O, A extends Comparable<A>> extends SimpleQuery<O, A> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GreaterThan)) return false;
-
-        GreaterThan that = (GreaterThan) o;
+        if (!(o instanceof GreaterThan that)) return false;
 
         if (!attribute.equals(that.attribute)) return false;
         if (valueInclusive != that.valueInclusive) return false;

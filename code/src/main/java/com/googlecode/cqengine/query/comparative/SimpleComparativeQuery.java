@@ -29,6 +29,7 @@ import com.googlecode.cqengine.query.option.QueryOptions;
  * @param <O> The type of the objects in the collection
  *
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public abstract class SimpleComparativeQuery<O, A> implements ComparativeQuery<O, A> {
 
@@ -49,9 +50,9 @@ public abstract class SimpleComparativeQuery<O, A> implements ComparativeQuery<O
             throw new IllegalArgumentException("The attribute argument was null.");
         }
         this.attribute = attribute;
-        if (attribute instanceof SimpleAttribute) {
+        if (attribute instanceof SimpleAttribute<O, A> simpleAttribute) {
             this.attributeIsSimple = true;
-            this.simpleAttribute = (SimpleAttribute<O, A>) attribute;
+            this.simpleAttribute = simpleAttribute;
         }
         else {
             this.attributeIsSimple = false;

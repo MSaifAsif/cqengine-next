@@ -45,9 +45,9 @@ public abstract class SimpleQuery<O, A> implements Query<O> {
             throw new IllegalArgumentException("The attribute argument was null.");
         }
         this.attribute = attribute;
-        if (attribute instanceof SimpleAttribute) {
+        if (attribute instanceof SimpleAttribute<O, A> simpleAttribute) {
             this.attributeIsSimple = true;
-            this.simpleAttribute = (SimpleAttribute<O, A>) attribute;
+            this.simpleAttribute = simpleAttribute;
         }
         else {
             this.attributeIsSimple = false;

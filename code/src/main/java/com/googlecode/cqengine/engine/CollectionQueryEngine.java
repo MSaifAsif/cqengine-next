@@ -77,6 +77,7 @@ import static com.googlecode.cqengine.resultset.iterator.IteratorUtil.groupAndSo
  * it performs and optimizes for those indexes.
  *
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
 
@@ -505,8 +506,8 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
                     // also will be able to retrieve objects which do not have values for the non-SimpleAttribute
                     // efficiently. Now check if an index exists which would allow index ordering...
                     for (Index<O> index : this.getIndexesOnAttribute(firstAttribute)) {
-                        if (index instanceof SortedKeyStatisticsAttributeIndex && !index.isQuantized()) {
-                            indexForOrdering = (SortedKeyStatisticsAttributeIndex<?, O>)index;
+                        if (index instanceof SortedKeyStatisticsAttributeIndex<?, O> ifo && !index.isQuantized()) {
+                            indexForOrdering = ifo;
                             break;
                         }
                     }

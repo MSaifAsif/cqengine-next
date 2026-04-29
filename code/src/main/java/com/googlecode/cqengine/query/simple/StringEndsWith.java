@@ -25,6 +25,7 @@ import static com.googlecode.cqengine.query.support.QueryValidation.checkQueryVa
  * Asserts than a {@link CharSequence}-based attribute ends with a given {@link CharSequence}-based suffix.
 
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class StringEndsWith<O, A extends CharSequence> extends SimpleQuery<O, A> {
 
@@ -77,9 +78,7 @@ public class StringEndsWith<O, A extends CharSequence> extends SimpleQuery<O, A>
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof StringEndsWith)) return false;
-
-        StringEndsWith that = (StringEndsWith) o;
+        if (!(o instanceof StringEndsWith that)) return false;
 
         if (!attribute.equals(that.attribute)) return false;
         if (!value.equals(that.value)) return false;

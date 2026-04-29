@@ -64,9 +64,7 @@ public class Equal<O, A> extends SimpleQuery<O, A> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Equal)) return false;
-
-        Equal equal = (Equal) o;
+        if (!(o instanceof Equal equal)) return false;
 
         if (!attribute.equals(equal.attribute)) return false;
         if (!value.equals(equal.value)) return false;

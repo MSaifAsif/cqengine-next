@@ -56,8 +56,7 @@ public class All<O> extends SimpleQuery<O, O> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof All)) return false;
-        All that = (All) o;
+        if (!(o instanceof All that)) return false;
         return this.objectType.equals(that.objectType);
     }
 

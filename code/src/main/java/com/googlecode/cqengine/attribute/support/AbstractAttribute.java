@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 
 /**
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public abstract class AbstractAttribute<O, A> implements Attribute<O, A> {
 

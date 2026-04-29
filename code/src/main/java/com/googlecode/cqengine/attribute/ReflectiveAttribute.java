@@ -26,6 +26,7 @@ import java.lang.reflect.Field;
  * but this type can sometimes be convenient.
  *
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class ReflectiveAttribute<O, A> extends SimpleAttribute<O, A> {
 
@@ -90,10 +91,9 @@ public class ReflectiveAttribute<O, A> extends SimpleAttribute<O, A> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ReflectiveAttribute)) return false;
+        if (!(o instanceof ReflectiveAttribute that)) return false;
         if (!super.equals(o)) return false;
 
-        ReflectiveAttribute that = (ReflectiveAttribute) o;
         if (!that.canEqual(this)) return false;
 
         if (!field.equals(that.field)) return false;

@@ -27,6 +27,7 @@ import java.util.*;
  * @param <O> The type of the object containing the attributes on which child queries in the query make assertions
  *
  * @author ngallagher
+ * @author Lautaro Eduardo Eber Luna
  * @since 2012-04-30 16:56
  */
 public abstract class LogicalQuery<O> implements Query<O> {
@@ -50,14 +51,14 @@ public abstract class LogicalQuery<O> implements Query<O> {
     public LogicalQuery(Collection<Query<O>> childQueries) {
         Objects.requireNonNull(childQueries, "The child queries supplied to a logical query cannot be null");
         for (Query<O> query : childQueries) {
-            if (query instanceof LogicalQuery) {
-                logicalQueries.add((LogicalQuery<O>) query);
+            if (query instanceof LogicalQuery<O> logicalQuery) {
+                logicalQueries.add(logicalQuery);
             }
-            else if (query instanceof SimpleQuery) {
-                simpleQueries.add((SimpleQuery<O, ?>) query);
+            else if (query instanceof SimpleQuery<O, ?> simpleQuery) {
+                simpleQueries.add(simpleQuery);
             }
-            else if (query instanceof ComparativeQuery) {
-                comparativeQueries.add((ComparativeQuery<O, ?>) query);
+            else if (query instanceof ComparativeQuery<O, ?> comparativeQuery) {
+                comparativeQueries.add(comparativeQuery);
             }
             else {
                 throw new IllegalStateException("Unexpected type of query: " + (query == null ? null : query + ", " + query.getClass()));

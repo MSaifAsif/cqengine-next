@@ -41,9 +41,7 @@ public class Min<O, A extends Comparable<A>> extends SimpleComparativeQuery<O, A
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Min)) return false;
-
-        Min min = (Min) o;
+        if (!(o instanceof Min min)) return false;
 
         return super.attribute.equals(min.attribute);
     }

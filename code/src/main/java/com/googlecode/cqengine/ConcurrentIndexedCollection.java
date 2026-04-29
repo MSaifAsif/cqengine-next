@@ -63,6 +63,7 @@ import static java.util.Collections.singleton;
  * having the same hash code and being equal according to their {@link #equals(Object)} methods.
  *
  * @author Niall Gallagher
+ * @author Lautaro Eduardo Eber Luna
  */
 public class ConcurrentIndexedCollection<O> implements IndexedCollection<O> {
 
@@ -74,7 +75,6 @@ public class ConcurrentIndexedCollection<O> implements IndexedCollection<O> {
     /**
      * Creates a new {@link ConcurrentIndexedCollection} with default settings, using {@link OnHeapPersistence}.
      */
-    @SuppressWarnings("unchecked")
     public ConcurrentIndexedCollection() {
         this(OnHeapPersistence.<O>withoutPrimaryKey());
     }
@@ -472,8 +472,7 @@ public class ConcurrentIndexedCollection<O> implements IndexedCollection<O> {
     }
 
     boolean doAddAll(Iterable<O> objects, QueryOptions queryOptions) {
-        if (objects instanceof Collection) {
-            Collection<O> c = (Collection<O>) objects;
+        if (objects instanceof Collection<O> c) {
             boolean modified = objectStore.addAll(c, queryOptions);
             indexEngine.addAll(ObjectSet.fromCollection(c), queryOptions);
             return modified;
@@ -490,8 +489,7 @@ public class ConcurrentIndexedCollection<O> implements IndexedCollection<O> {
     }
 
     boolean doRemoveAll(Iterable<O> objects, QueryOptions queryOptions) {
-        if (objects instanceof Collection) {
-            Collection<O> c = (Collection<O>) objects;
+        if (objects instanceof Collection<O> c) {
             boolean modified = objectStore.removeAll(c, queryOptions);
             indexEngine.removeAll(ObjectSet.fromCollection(c), queryOptions);
             return modified;
@@ -533,8 +531,7 @@ public class ConcurrentIndexedCollection<O> implements IndexedCollection<O> {
         QueryOptions queryOptions = openRequestScopeResourcesIfNecessary(null);
         try {
             if (this == o) return true;
-            if (!(o instanceof Set)) return false;
-            Set that = (Set) o;
+            if (!(o instanceof Set that)) return false;
 
             if (!getObjectStoreAsSet(queryOptions).equals(that)) return false;
 
