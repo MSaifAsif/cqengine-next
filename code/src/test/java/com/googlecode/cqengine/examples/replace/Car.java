@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * concurrent replace approach in the {@link Replace} example.
  *
  * @author Niall Gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class Car {
 
@@ -54,7 +53,8 @@ public class Car {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Car other)) return false;
+        if (!(o instanceof Car)) return false;
+        Car other = (Car) o;
         return this.carId == other.carId && this.version == other.version;
     }
 
