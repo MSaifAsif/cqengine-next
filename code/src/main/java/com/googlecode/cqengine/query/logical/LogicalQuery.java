@@ -27,7 +27,6 @@ import java.util.*;
  * @param <O> The type of the object containing the attributes on which child queries in the query make assertions
  *
  * @author ngallagher
- * @author Lautaro Eduardo Eber Luna
  * @since 2012-04-30 16:56
  */
 public abstract class LogicalQuery<O> implements Query<O> {

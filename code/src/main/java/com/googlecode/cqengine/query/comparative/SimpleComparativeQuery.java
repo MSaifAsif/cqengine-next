@@ -29,7 +29,6 @@ import com.googlecode.cqengine.query.option.QueryOptions;
  * @param <O> The type of the objects in the collection
  *
  * @author Niall Gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public abstract class SimpleComparativeQuery<O, A> implements ComparativeQuery<O, A> {
 

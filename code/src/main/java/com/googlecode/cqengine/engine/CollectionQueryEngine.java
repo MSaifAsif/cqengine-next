@@ -77,7 +77,6 @@ import static com.googlecode.cqengine.resultset.iterator.IteratorUtil.groupAndSo
  * it performs and optimizes for those indexes.
  *
  * @author Niall Gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
 

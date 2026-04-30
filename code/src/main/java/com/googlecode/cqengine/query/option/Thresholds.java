@@ -28,7 +28,6 @@ import java.util.Map;
  * <code>QueryOptions queryOptions = queryOptions(applyThresholds(INDEX_ORDERING_SELECTIVITY, 0.4))</code>
  *
  * @author niall.gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class Thresholds {
 

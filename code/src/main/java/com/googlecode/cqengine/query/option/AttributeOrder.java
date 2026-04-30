@@ -24,7 +24,6 @@ import com.googlecode.cqengine.attribute.OrderMissingLastAttribute;
  * Represents an attribute and an associated preference for sorting results according to that attribute
  * in ascending or descending order.
  *
- * @author Lautaro Eduardo Eber Luna
  * @author Roberto Socrates
  * @author Niall Gallagher
  */

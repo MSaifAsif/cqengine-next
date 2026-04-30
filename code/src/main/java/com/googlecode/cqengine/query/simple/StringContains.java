@@ -25,7 +25,6 @@ import static com.googlecode.cqengine.query.support.QueryValidation.checkQueryVa
  * Asserts than a {@link CharSequence}-based attribute ends with a given {@link CharSequence}-based suffix.
 
  * @author Niall Gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class StringContains<O, A extends CharSequence> extends SimpleQuery<O, A> {
 

@@ -26,7 +26,6 @@ import java.lang.reflect.Field;
  * but this type can sometimes be convenient.
  *
  * @author Niall Gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class ReflectiveAttribute<O, A> extends SimpleAttribute<O, A> {
 

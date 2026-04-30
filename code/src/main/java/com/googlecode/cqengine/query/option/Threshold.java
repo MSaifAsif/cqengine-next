@@ -22,7 +22,6 @@ package com.googlecode.cqengine.query.option;
  * See {@link EngineThresholds} for information about some thresholds which can be set.
  *
  * @author niall.gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class Threshold {
 

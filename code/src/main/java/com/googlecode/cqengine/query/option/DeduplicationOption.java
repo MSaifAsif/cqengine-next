@@ -19,7 +19,6 @@ import java.util.Map;
 
 /**
  * @author Niall Gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class DeduplicationOption {
 

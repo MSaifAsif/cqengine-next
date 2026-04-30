@@ -50,7 +50,6 @@ import java.util.concurrent.ConcurrentMap;
  * For default settings, supply {@link DefaultIndexMapFactory} and {@link DefaultValueSetFactory}.
  *
  * @author Niall Gallagher
- * @author Lautaro Luna
  */
 public class CompoundIndex<O> extends AbstractMapBasedAttributeIndex<CompoundValueTuple<O>, O, ConcurrentMap<CompoundValueTuple<O>, StoredResultSet<O>>> implements KeyStatisticsAttributeIndex<CompoundValueTuple<O>, O>, OnHeapTypeIndex {
 

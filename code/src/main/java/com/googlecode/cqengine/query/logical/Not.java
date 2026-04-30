@@ -27,7 +27,6 @@ import static java.util.Objects.requireNonNull;
  * from the child query.
  *
  * @author ngallagher
- * @author Lautaro Eduardo Eber Luna
  * @since 2012-04-30 17:00
  */
 public class Not<O> extends LogicalQuery<O> {

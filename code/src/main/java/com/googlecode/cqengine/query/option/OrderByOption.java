@@ -22,7 +22,6 @@ import java.util.List;
  * Represents a list of attributes and associated preferences for sorting results according to those attributes each
  * in ascending or descending order.
  *
- * @author Lautaro Eduardo Eber Luna
  * @author Roberto Socrates
  * @author Niall Gallagher
  */

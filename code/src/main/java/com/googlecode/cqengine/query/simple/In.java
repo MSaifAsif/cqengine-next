@@ -25,7 +25,6 @@ import java.util.Set;
  * Asserts that an attribute has at least one of the values specified by the In query.
  *
  * @author Silvano Riz
- * @author Lautaro Eduardo Eber Luna
  */
 public class In<O, A> extends SimpleQuery<O, A> {
 

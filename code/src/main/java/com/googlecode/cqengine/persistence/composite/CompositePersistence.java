@@ -33,7 +33,6 @@ import java.util.concurrent.ConcurrentMap;
  * The collection itself will be persisted to the primary persistence object supplied to the constructor.
  *
  * @author niall.gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class CompositePersistence<O, A extends Comparable<A>> implements Persistence<O, A> {
 

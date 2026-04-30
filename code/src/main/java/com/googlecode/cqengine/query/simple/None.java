@@ -28,7 +28,6 @@ import static com.googlecode.cqengine.query.support.QueryValidation.checkObjectT
  * This is equivalent to a literal boolean 'false'.
  *
  * @author ngallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class None<O> extends SimpleQuery<O, O> {
 

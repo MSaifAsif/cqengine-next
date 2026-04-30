@@ -88,7 +88,6 @@ import static com.googlecode.cqengine.query.option.FlagsEnabled.isFlagEnabled;
  * the persistence file located on a ram disk.
  *
  * @author niall.gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class OffHeapPersistence<O, A extends Comparable<A>> implements SQLitePersistence<O, A>, Closeable {
 

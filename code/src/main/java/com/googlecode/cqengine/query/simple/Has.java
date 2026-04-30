@@ -23,7 +23,6 @@ import com.googlecode.cqengine.query.option.QueryOptions;
  * Asserts that an attribute has a value (is not null).
  *
  * @author Niall Gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class Has<O, A> extends SimpleQuery<O, A> {
 

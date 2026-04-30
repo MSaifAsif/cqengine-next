@@ -27,7 +27,6 @@ import java.util.List;
  * A comparator which sorts result objects according to a list of attributes each with an associated preference for
  * ascending or descending order.
  *
- * @author Lautaro Eduardo Eber Luna
  * @author Roberto Socrates
  * @author Niall Gallagher
  */

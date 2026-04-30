@@ -39,7 +39,6 @@ import java.util.concurrent.ConcurrentMap;
  * correct persistence to use for the index requesting the connection.
  *
  * @author niall.gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class RequestScopeConnectionManager implements ConnectionManager, Closeable {
 

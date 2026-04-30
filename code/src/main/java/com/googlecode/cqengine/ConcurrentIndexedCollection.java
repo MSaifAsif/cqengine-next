@@ -63,7 +63,6 @@ import static java.util.Collections.singleton;
  * having the same hash code and being equal according to their {@link #equals(Object)} methods.
  *
  * @author Niall Gallagher
- * @author Lautaro Eduardo Eber Luna
  */
 public class ConcurrentIndexedCollection<O> implements IndexedCollection<O> {
 
