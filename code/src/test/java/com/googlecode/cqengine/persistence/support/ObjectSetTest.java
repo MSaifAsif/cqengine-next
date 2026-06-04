@@ -47,7 +47,7 @@ public class ObjectSetTest {
     public void testFromObjectStore_IteratorClose() throws Exception {
         ObjectStore<Car> objectStore = mock(ObjectStore.class);
         CloseableIterator<Car> closeableIterator = mock(CloseableIterator.class);
-        when(objectStore.iterator(Mockito.<QueryOptions>any())).thenReturn(closeableIterator);
+        when(objectStore.iterator(Mockito.any(QueryOptions.class))).thenReturn(closeableIterator);
 
         ObjectSet<Car> objectSet = ObjectSet.fromObjectStore(objectStore, noQueryOptions());
         CloseableIterator<Car> objectSetIterator = objectSet.iterator();
@@ -63,7 +63,7 @@ public class ObjectSetTest {
         when(closeableIterator.hasNext()).thenReturn(true);
         when(closeableIterator.next()).thenReturn(CarFactory.createCar(1));
 
-        when(objectStore.iterator(Mockito.<QueryOptions>any())).thenReturn(closeableIterator);
+        when(objectStore.iterator(Mockito.any(QueryOptions.class))).thenReturn(closeableIterator);
 
         ObjectSet<Car> objectSet = ObjectSet.fromObjectStore(objectStore, noQueryOptions());
         CloseableIterator<Car> objectSetIterator = objectSet.iterator();
@@ -78,7 +78,7 @@ public class ObjectSetTest {
     public void testFromObjectStore_ObjectSetClose() throws Exception {
         ObjectStore<Car> objectStore = mock(ObjectStore.class);
         CloseableIterator<Car> closeableIterator = mock(CloseableIterator.class);
-        when(objectStore.iterator(Mockito.<QueryOptions>any())).thenReturn(closeableIterator);
+        when(objectStore.iterator(Mockito.any(QueryOptions.class))).thenReturn(closeableIterator);
 
         ObjectSet<Car> objectSet = ObjectSet.fromObjectStore(objectStore, noQueryOptions());
         objectSet.iterator();
@@ -93,7 +93,7 @@ public class ObjectSetTest {
         ObjectStore<Car> objectStore = mock(ObjectStore.class);
         CloseableIterator<Car> closeableIterator = mock(CloseableIterator.class);
         when(closeableIterator.hasNext()).thenReturn(false);
-        when(objectStore.iterator(Mockito.<QueryOptions>any())).thenReturn(closeableIterator);
+        when(objectStore.iterator(Mockito.any(QueryOptions.class))).thenReturn(closeableIterator);
 
         ObjectSet<Car> objectSet = ObjectSet.fromObjectStore(objectStore, noQueryOptions());
         Assert.assertEquals(true, objectSet.isEmpty());
@@ -106,7 +106,7 @@ public class ObjectSetTest {
         ObjectStore<Car> objectStore = mock(ObjectStore.class);
         CloseableIterator<Car> closeableIterator = mock(CloseableIterator.class);
         when(closeableIterator.hasNext()).thenReturn(true);
-        when(objectStore.iterator(Mockito.<QueryOptions>any())).thenReturn(closeableIterator);
+        when(objectStore.iterator(Mockito.any(QueryOptions.class))).thenReturn(closeableIterator);
 
         ObjectSet<Car> objectSet = ObjectSet.fromObjectStore(objectStore, noQueryOptions());
         Assert.assertEquals(false, objectSet.isEmpty());

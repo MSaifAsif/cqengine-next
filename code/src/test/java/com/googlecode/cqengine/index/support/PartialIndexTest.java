@@ -186,7 +186,7 @@ public class PartialIndexTest {
     @SuppressWarnings("unchecked")
     static SortedKeyStatisticsAttributeIndex<Integer, Car> backingIndexSupportsQuery(Query<Car> querySupportedByBackingIndex) {
         SortedKeyStatisticsAttributeIndex attributeIndex = mock(SortedKeyStatisticsAttributeIndex.class);
-        when(attributeIndex.supportsQuery(Mockito.eq(querySupportedByBackingIndex), Mockito.<QueryOptions>any())).thenReturn(true);
+        when(attributeIndex.supportsQuery(Mockito.eq(querySupportedByBackingIndex), Mockito.any(QueryOptions.class))).thenReturn(true);
         return attributeIndex;
     }
 }

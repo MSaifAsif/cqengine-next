@@ -63,7 +63,7 @@ public class FilteredObjectStoreTest {
     public void testIterator_Close() {
         CloseableIterator<Car> mockIterator = mock(CloseableIterator.class);
         ObjectStore<Car> mockObjectStore = mock(ObjectStore.class);
-        Mockito.when(mockObjectStore.iterator(Mockito.<QueryOptions>any())).thenReturn(mockIterator);
+        Mockito.when(mockObjectStore.iterator(Mockito.any(QueryOptions.class))).thenReturn(mockIterator);
 
         FilteredObjectStore<Car> filteredObjectStore = new FilteredObjectStore<Car>(
                 mockObjectStore,
