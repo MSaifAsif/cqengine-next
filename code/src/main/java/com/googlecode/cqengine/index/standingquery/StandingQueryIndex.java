@@ -101,7 +101,6 @@ public class StandingQueryIndex<O> implements Index<O>, OnHeapTypeIndex {
     @Override
     public ResultSet<O> retrieve(final Query<O> query, QueryOptions queryOptions) {
         if (!supportsQuery(query, queryOptions)) {
-            // TODO: check necessary?
             throw new IllegalArgumentException("Unsupported query: " + query);
         }
         return storedResultSet;
