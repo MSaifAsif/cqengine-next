@@ -345,11 +345,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- ByteBuddy with Java 21 support - overrides version in EqualsVerifier -->
+        <!-- ByteBuddy with Java 26 support - overrides version in EqualsVerifier -->
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.14.11</version>
+            <version>1.16.1</version>
             <scope>test</scope>
         </dependency>
 
