@@ -219,7 +219,7 @@ public class CompoundIndex<O> extends AbstractMapBasedAttributeIndex<CompoundVal
      * @param <O> The type of the object containing the attributes
      * @return A {@link CompoundIndex} based on these attributes
      */
-    // TODO: add overloaded non-varargs versions of this method to prevent unchecked warnings pre JDK 7?
+    
     public static <O> CompoundIndex<O> onAttributes(Attribute<O, ?>... attributes) {
         return onAttributes(new DefaultIndexMapFactory<O>(), new DefaultValueSetFactory<O>(), attributes);
     }
@@ -233,7 +233,6 @@ public class CompoundIndex<O> extends AbstractMapBasedAttributeIndex<CompoundVal
      * @param <O> The type of the object containing the attributes
      * @return A {@link CompoundIndex} based on these attributes
      */
-    // TODO: add overloaded non-varargs versions of this method to prevent unchecked warnings pre JDK 7?
     public static <O> CompoundIndex<O> onAttributes(Factory<ConcurrentMap<CompoundValueTuple<O>, StoredResultSet<O>>> indexMapFactory, Factory<StoredResultSet<O>> valueSetFactory, Attribute<O, ?>... attributes) {
         List<Attribute<O, ?>> attributeList = Arrays.asList(attributes);
         CompoundAttribute<O> compoundAttribute = new CompoundAttribute<O>(attributeList);
