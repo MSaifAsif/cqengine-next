@@ -585,7 +585,7 @@ public class CollectionQueryEngine<O> implements QueryEngineInternal<O> {
         }
 
         // Return the results, ensuring that the close() method will close any resources which were opened...
-        // This wrapping is kept intentionally to guarantee close() is called, even though IndexedCollections may also hamdle closing in some cases.
+        // This wrapping is kept intentionally to guarantee close() is called, even though IndexedCollections may also handle closing in some cases.
         return new CloseableResultSet<O>(resultSet, query, queryOptions) {
             @Override
             public void close() {
