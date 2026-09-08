@@ -28,8 +28,11 @@ import com.googlecode.cqengine.query.logical.Not;
 import com.googlecode.cqengine.query.logical.Or;
 import com.googlecode.cqengine.query.option.*;
 import com.googlecode.cqengine.query.simple.*;
-import net.jodah.typetools.TypeResolver;
+import io.leangen.geantyref.GenericTypeReflector;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -862,7 +865,7 @@ public class QueryFactory {
      * <p/>
      * <b>Limitations of type inference</b><br/>
      * As of Java 8, there are limitations of this type inference.
-     * CQEngine uses <a href="https://github.com/jhalterman/typetools">TypeTools</a> to infer generic types.
+     * CQEngine uses <a href="https://github.com/leangen/geantyref">GenTypeRef</a> to infer generic types.
      * See documentation of that library for details.
      * If generic type information cannot be inferred, as a workaround you may use the overloaded variant of this method
      * which allows the types to be specified explicitly.
@@ -885,7 +888,7 @@ public class QueryFactory {
      * <p/>
      * <b>Limitations of type inference</b><br/>
      * As of Java 8, there are limitations of this type inference.
-     * CQEngine uses <a href="https://github.com/jhalterman/typetools">TypeTools</a> to infer generic types.
+     * CQEngine uses <a href="https://github.com/leangen/geantyref">GenTypeRef</a> to infer generic types.
      * See documentation of that library for details.
      * If generic type information cannot be inferred, as a workaround you may use the overloaded variant of this method
      * which allows the types to be specified explicitly.
@@ -923,7 +926,7 @@ public class QueryFactory {
      * <p/>
      * <b>Limitations of type inference</b><br/>
      * As of Java 8, there are limitations of this type inference.
-     * CQEngine uses <a href="https://github.com/jhalterman/typetools">TypeTools</a> to infer generic types.
+     * CQEngine uses <a href="https://github.com/leangen/geantyref">GenTypeRef</a> to infer generic types.
      * See documentation of that library for details.
      * If generic type information cannot be inferred, as a workaround you may use the overloaded variant of this method
      * which allows the types to be specified explicitly.
@@ -946,7 +949,7 @@ public class QueryFactory {
      * <p/>
      * <b>Limitations of type inference</b><br/>
      * As of Java 8, there are limitations of this type inference.
-     * CQEngine uses <a href="https://github.com/jhalterman/typetools">TypeTools</a> to infer generic types.
+     * CQEngine uses <a href="https://github.com/leangen/geantyref">GenTypeRef</a> to infer generic types.
      * See documentation of that library for details.
      * If generic type information cannot be inferred, as a workaround you may use the overloaded variant of this method
      * which allows the types to be specified explicitly.
@@ -984,7 +987,7 @@ public class QueryFactory {
      * <p/>
      * <b>Limitations of type inference</b><br/>
      * As of Java 8, there are limitations of this type inference.
-     * CQEngine uses <a href="https://github.com/jhalterman/typetools">TypeTools</a> to infer generic types.
+     * CQEngine uses <a href="https://github.com/leangen/geantyref">GenTypeRef</a> to infer generic types.
      * See documentation of that library for details.
      * If generic type information cannot be inferred, as a workaround you may use the overloaded variant of this method
      * which allows the types to be specified explicitly.
@@ -1008,7 +1011,7 @@ public class QueryFactory {
      * <p/>
      * <b>Limitations of type inference</b><br/>
      * As of Java 8, there are limitations of this type inference.
-     * CQEngine uses <a href="https://github.com/jhalterman/typetools">TypeTools</a> to infer generic types.
+     * CQEngine uses <a href="https://github.com/leangen/geantyref">GenTypeRef</a> to infer generic types.
      * See documentation of that library for details.
      * If generic type information cannot be inferred, as a workaround you may use the overloaded variant of this method
      * which allows the types to be specified explicitly.
@@ -1047,7 +1050,7 @@ public class QueryFactory {
      * <p/>
      * <b>Limitations of type inference</b><br/>
      * As of Java 8, there are limitations of this type inference.
-     * CQEngine uses <a href="https://github.com/jhalterman/typetools">TypeTools</a> to infer generic types.
+     * CQEngine uses <a href="https://github.com/leangen/geantyref">GenTypeRef</a> to infer generic types.
      * See documentation of that library for details.
      * If generic type information cannot be inferred, as a workaround you may use the overloaded variant of this method
      * which allows the types to be specified explicitly.
@@ -1071,7 +1074,7 @@ public class QueryFactory {
      * <p/>
      * <b>Limitations of type inference</b><br/>
      * As of Java 8, there are limitations of this type inference.
-     * CQEngine uses <a href="https://github.com/jhalterman/typetools">TypeTools</a> to infer generic types.
+     * CQEngine uses <a href="https://github.com/leangen/geantyref">GenTypeRef</a> to infer generic types.
      * See documentation of that library for details.
      * If generic type information cannot be inferred, as a workaround you may use the overloaded variant of this method
      * which allows the types to be specified explicitly.
@@ -1117,7 +1120,7 @@ public class QueryFactory {
                     "which allow the generic types to be specified explicitly.";
 
     static <O, A, F> FunctionGenericTypes<O, A> resolveSimpleFunctionGenericTypes(Class<?> subType) {
-        Class<?>[] typeArgs = TypeResolver.resolveRawArguments(SimpleFunction.class, subType);
+        Class<?>[] typeArgs = resolveSimpleFunctionTypeArguments(subType);
 
         validateSimpleFunctionGenericTypes(typeArgs, subType);
 
@@ -1126,12 +1129,28 @@ public class QueryFactory {
         return new FunctionGenericTypes<O, A>(objectType, attributeType);
     }
 
+    static Class<?>[] resolveSimpleFunctionTypeArguments(Class<?> subType) {
+        try {
+            Method applyMethod = SimpleFunction.class.getMethod("apply", Object.class);
+            Type[] paramTypes = GenericTypeReflector.getParameterTypes(applyMethod, subType);
+            Type returnType = GenericTypeReflector.getReturnType(applyMethod, subType);
+
+            Class<?>[] typeArgs = new Class<?>[2];
+            typeArgs[0] = typeToClass(paramTypes[0]);
+            typeArgs[1] = typeToClass(returnType);
+
+            return typeArgs;
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
     static void validateSimpleFunctionGenericTypes(Class<?>[] typeArgs, Class<?> subType) {
         if (typeArgs == null) {
             throw new IllegalStateException("Could not resolve any generic type information from the given " +
                     "function of type: " + subType.getName() + ". " + GENERIC_TYPE_RESOLUTION_FAILURE_MESSAGE);
         }
-        if (typeArgs.length != 2 || typeArgs[0] == TypeResolver.Unknown.class || typeArgs[1] == TypeResolver.Unknown.class) {
+        if (typeArgs.length != 2 || typeArgs[0] == null || typeArgs[1] == null) {
             throw new IllegalStateException("Could not resolve sufficient generic type information from the given " +
                     "function of type: " + subType.getName() + ", resolved: " + Arrays.toString(typeArgs) + ". " +
                     GENERIC_TYPE_RESOLUTION_FAILURE_MESSAGE);
@@ -1139,7 +1158,7 @@ public class QueryFactory {
     }
 
     static <O> Class<O> resolveMultiValueFunctionGenericObjectType(Class<?> subType) {
-        Class<?>[] typeArgs = TypeResolver.resolveRawArguments(MultiValueFunction.class, subType);
+        Class<?>[] typeArgs = resolveMultiValueFunctionTypeArguments(subType);
 
         validateMultiValueFunctionGenericTypes(typeArgs, subType);
 
@@ -1147,16 +1166,40 @@ public class QueryFactory {
         return objectType;
     }
 
+    static Class<?>[] resolveMultiValueFunctionTypeArguments(Class<?> subType) {
+        try {
+            Method applyMethod = MultiValueFunction.class.getMethod("apply", Object.class);
+            Type[] paramTypes = GenericTypeReflector.getParameterTypes(applyMethod, subType);
+            Type returnType = GenericTypeReflector.getReturnType(applyMethod, subType);
+
+            Class<?>[] typeArgs = new Class<?>[3];
+            typeArgs[0] = typeToClass(paramTypes[0]);
+            typeArgs[1] = null;
+            typeArgs[2] = typeToClass(returnType);
+
+            return typeArgs;
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
     static void validateMultiValueFunctionGenericTypes(Class<?>[] typeArgs, Class<?> subType) {
         if (typeArgs == null) {
             throw new IllegalStateException("Could not resolve any generic type information from the given " +
                     "function of type: " + subType.getName() + ". " + GENERIC_TYPE_RESOLUTION_FAILURE_MESSAGE);
         }
-        if (typeArgs.length != 3 || typeArgs[0] == TypeResolver.Unknown.class) {
+        if (typeArgs.length != 3 || typeArgs[0] == null) {
             throw new IllegalStateException("Could not resolve sufficient generic type information from the given " +
                     "function of type: " + subType.getName() + ", resolved: " + Arrays.toString(typeArgs) + ". " +
                     GENERIC_TYPE_RESOLUTION_FAILURE_MESSAGE);
         }
+    }
+
+    static Class<?> typeToClass(Type type) {
+        if (type instanceof Class<?>) {
+            return (Class<?>) type;
+        }
+        return null;
     }
 
 
