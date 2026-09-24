@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Configured JaCoCo line coverage verification rule requiring a minimum of 80% bundle-level line coverage ([#19](https://github.com/MSaifAsif/cqengine-next/issues/19))
+
 ### Changed
 - Upgraded `slf4j-simple` from `1.7.36` to `2.0.17` (test scope)
 - Upgraded `sqlite-jdbc` from `3.45.0.0` to `3.51.3.0` (latest stable, released Mar 16, 2026)
