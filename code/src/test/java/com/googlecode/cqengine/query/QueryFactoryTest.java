@@ -23,7 +23,6 @@ import com.googlecode.cqengine.query.option.*;
 import com.googlecode.cqengine.testutil.Car;
 import com.googlecode.cqengine.testutil.CarFactory;
 
-import net.jodah.typetools.TypeResolver;
 import org.junit.Test;
 
 import java.util.List;
@@ -140,13 +139,13 @@ public class QueryFactoryTest {
 
     @Test(expected = IllegalStateException.class)
     public void testValidateSimpleFunctionGenericTypes_InvalidTypeArgs1() {
-        Class<?>[] typeArgs = new Class<?>[] {TypeResolver.Unknown.class, Integer.class};
+        Class<?>[] typeArgs = new Class<?>[] {null, Integer.class};
         validateSimpleFunctionGenericTypes(typeArgs, SimpleFunction.class);
     }
 
     @Test(expected = IllegalStateException.class)
     public void testValidateSimpleFunctionGenericTypes_InvalidTypeArgs2() {
-        Class<?>[] typeArgs = new Class<?>[] {Car.class, TypeResolver.Unknown.class};
+        Class<?>[] typeArgs = new Class<?>[] {Car.class, null};
         validateSimpleFunctionGenericTypes(typeArgs, SimpleFunction.class);
     }
 
@@ -171,7 +170,7 @@ public class QueryFactoryTest {
 
     @Test(expected = IllegalStateException.class)
     public void testValidateMultiValueFunctionGenericTypes_InvalidTypeArgs() {
-        Class<?>[] typeArgs = new Class<?>[] {TypeResolver.Unknown.class, Integer.class, List.class};
+        Class<?>[] typeArgs = new Class<?>[] {null, Integer.class, List.class};
         validateMultiValueFunctionGenericTypes(typeArgs, MultiValueFunction.class);
     }
 }
